@@ -67,11 +67,22 @@
   --color-base-100: var(--color-d-gray-10);
 
 
-    --background-color: var(--color-d-gray-110);
+    --background-color: var(--color-d-gray-100);
+    --background-primary-alt: var(--color-d-gray-110);
+    --background-primary: var(--color-d-gray-100);
+    --background-secondary: var(--color-d-gray-120);
+  --background-secondary-alt: var(--color-d-gray-120);
+  --background-modifier-box-shadow: rgba(0, 0, 0, 0.3);
   --text-color: var(--color-d-gray-20);
   --border-color: #424752;
   --accent-bg: #3a3f4b;
   --font-family: "VictorMono", monospace;
+
+  --callout-icon-note: iconoir-journal;
+  --callout-icon-tip: iconoir-bulb;
+  --callout-icon-warning: iconoir-warning-triangle;
+  --callout-icon-danger: iconoir-warning-triangle;
+  --callout-icon-info: iconoir-info-circle;
 }
 #metap-modal {
     font-size: 0.8rem;

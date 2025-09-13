@@ -6,7 +6,6 @@ const livePreviewPlugin = EditorView.decorations.compute(["doc"], (state) => {
   syntaxTree(state).iterate({
     enter: (node) => {
       const { type, from, to } = node;
-      console.log(type.name);
       switch (type.name) {
         case "HeaderMark":
         case "QuoteMark":

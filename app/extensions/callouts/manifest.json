@@ -1,0 +1,5 @@
+{
+  "name": "Callouts",
+  "main": "./main.js",
+  "style": "./style.css"
+}
