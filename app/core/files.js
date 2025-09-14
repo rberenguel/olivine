@@ -37,10 +37,15 @@ function buildFileTree(files) {
 export async function loadAndIndexNotes(files) {
   if (!files) return;
 
-  const fileTree = buildFileTree(files);
+  // Filter out hidden files and files in hidden directories.
+  const filteredFiles = files.filter(
+    (path) => !path.split("/").some((part) => part.startsWith(".")),
+  );
+
+  const fileTree = buildFileTree(filteredFiles);
   loadSidebarList(fileTree);
 
-  const documents = files.map((path) => ({
+  const documents = filteredFiles.map((path) => ({
     id: path,
     name: path.replace(".md", ""),
   }));

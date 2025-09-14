@@ -15,6 +15,7 @@ This file declares the extension's metadata and entry points.
 - `style`: (Optional) The path to a CSS stylesheet that will be automatically loaded.
 
 **Example:**
+
 ```json
 {
   "name": "Document Outline",
@@ -30,9 +31,10 @@ This is the JavaScript entry point. It must export a single function named `acti
 - `activate(app)`: This function is called once when the application starts. It receives the global `app` object, which is the gateway to all core APIs.
 
 **Example:**
+
 ```javascript
 export function activate(app) {
-  console.log('My extension is now active!');
+  console.log("My extension is now active!");
   // ... register commands, views, and editor plugins here ...
 }
 ```
@@ -72,6 +74,7 @@ For file and pane manipulation.
 - `app.workspace.getActivePane(): object`: Returns the currently active pane object.
 
 **Example:**
+
 ```javascript
 // Get the active editor view
 const activeEditorView = app.workspace.getActivePane().editorView;
@@ -89,9 +92,11 @@ if (notePath) {
 For creating and managing UI elements.
 
 - `app.ui.registerView(location: string, element: HTMLElement)`: Adds a persistent UI element to a predefined location.
+
   - **Available `location`s:** `'statusbar'`, `'sidebar-panel'`.
 
 - `app.ui.registerViewType(name: string, config: object)`: Registers a new type of non-editor pane that can be opened via a command.
+
   - `config.title`: The display name for the new view (e.g., "Graph").
   - `config.render(container: HTMLElement)`: A function that populates the pane's content area.
 
@@ -99,18 +104,19 @@ For creating and managing UI elements.
   - **Available `direction`s:** `'vertical'` (side-by-side), `'horizontal'` (stacked).
 
 **Example:**
+
 ```javascript
 // Add an item to the status bar
-const myStatusItem = document.createElement('div');
+const myStatusItem = document.createElement("div");
 myStatusItem.textContent = "My Plugin Status";
-app.ui.registerView('statusbar', myStatusItem);
+app.ui.registerView("statusbar", myStatusItem);
 
 // Register a new custom pane for a calendar view
-app.ui.registerViewType('calendar', {
-  title: 'Calendar',
+app.ui.registerViewType("calendar", {
+  title: "Calendar",
   render: (container) => {
-    container.innerHTML = '<h2>My Calendar View</h2>';
-  }
+    container.innerHTML = "<h2>My Calendar View</h2>";
+  },
 });
 ```
 
@@ -126,17 +132,21 @@ Integrates with the command palette.
 - `app.commands.refreshPalette()`: Re-renders the command palette with the current command list.
 
 **Example:**
+
 ```javascript
 const myCommand = {
   title: "Insert Today's Date",
   lambda: () => {
     const editorView = app.workspace.getActivePane().editorView;
     editorView.dispatch({
-      changes: { from: editorView.state.selection.main.head, insert: new Date().toLocaleDateString() }
+      changes: {
+        from: editorView.state.selection.main.head,
+        insert: new Date().toLocaleDateString(),
+      },
     });
-  }
+  },
 };
-app.commands.register('static', myCommand);
+app.commands.register("static", myCommand);
 app.commands.refreshPalette();
 ```
 
@@ -150,14 +160,16 @@ A simple event bus for listening to application events.
 - `app.events.emit(eventName:string, data: object)`: Fires an event.
 
 **Known Core Events:**
+
 - `workspace:ready`: Fired after the initial file list is loaded. `data.files` contains the file list.
 - `file:opened`: Fired when a file is opened. `data.filename` and `data.pane`.
 - `file:saved`: Fired after a file is auto-saved. `data.path`.
 - `pane:activated`: Fired when the active pane changes. `data.pane`.
 
 **Example:**
+
 ```javascript
-app.events.on('file:opened', ({ filename }) => {
+app.events.on("file:opened", ({ filename }) => {
   console.log(`${filename} was opened.`);
 });
 ```
@@ -174,26 +186,37 @@ To extend the editor's functionality, you create CodeMirror 6 extensions and pus
 **Common Extension Patterns:**
 
 1.  **Event Handlers:** For clicks, mouseovers, etc. Use `EditorView.domEventHandlers`.
+
     ```javascript
     import { EditorView } from "CodeMirrorBundle";
     const myClickHandler = EditorView.domEventHandlers({
-      mousedown: (event, view) => { /* ... */ }
+      mousedown: (event, view) => {
+        /* ... */
+      },
     });
     app.state.cmExtensions.push(myClickHandler);
     ```
 
 2.  **Complex Decorations (Block Widgets):** For features that replace entire blocks of text and need to manage their own state. Use `StateField`.
+
     ```javascript
     import { StateField, Decoration, EditorView } from "CodeMirrorBundle";
     const myStateField = StateField.define({
-      create(state) { /* ... */ },
-      update(decorations, transaction) { /* ... */ },
-      provide(field) { return EditorView.decorations.from(field); }
+      create(state) {
+        /* ... */
+      },
+      update(decorations, transaction) {
+        /* ... */
+      },
+      provide(field) {
+        return EditorView.decorations.from(field);
+      },
     });
     app.state.cmExtensions.push(myStateField);
     ```
 
 3.  **Inline Decorations & Widgets:** For styling text or replacing it with simple inline elements. Use `ViewPlugin`.
+
     ```javascript
     import { ViewPlugin, Decoration } from "CodeMirrorBundle";
     const myViewPlugin = ViewPlugin.fromClass(class {
@@ -209,9 +232,11 @@ To extend the editor's functionality, you create CodeMirror 6 extensions and pus
     ```javascript
     import { autocompletion } from "CodeMirrorBundle";
     const myCompleter = autocompletion({
-      override: [ (context) => {
-        // ... return { from: ..., options: [...] } or null
-      }]
+      override: [
+        (context) => {
+          // ... return { from: ..., options: [...] } or null
+        },
+      ],
     });
     app.state.cmExtensions.push(myCompleter);
     ```

@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       title: "Toggle Sidebar",
       aliases: ["ui", "sidebar"],
-      lambda: () => sidebarToggleBtn.click(),
     },
     {
       title: "Re-index Notes",
@@ -49,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const openFolderBtn = document.getElementById("open-folder-btn");
   const notesList = document.getElementById("notes-list");
   const editorContainer = document.getElementById("editor-container");
-  const sidebarToggleBtn = document.getElementById("sidebar-toggle-btn");
   const currentFileTitle = document.getElementById("current-file-title"); // <-- Add this
 
   // --- IndexedDB Helper --- (This section is unchanged)
@@ -399,9 +397,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   notesList.addEventListener("click", (e) => {
     if (e.target?.tagName === "LI") openFile(e.target.dataset.filename);
-  });
-  sidebarToggleBtn.addEventListener("click", () => {
-    appContainer.classList.toggle("sidebar-hidden");
   });
 
   // --- Initialization --- (Unchanged)

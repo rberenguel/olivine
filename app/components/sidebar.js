@@ -3,7 +3,6 @@ import { state } from "../core/state.js";
 
 const notesList = document.getElementById("notes-list");
 const appContainer = document.getElementById("app-container");
-const sidebarToggleBtn = document.getElementById("sidebar-toggle-btn");
 const sidebarEl = document.getElementById("sidebar"); // Get the sidebar element
 
 function renderTreeToDOM(nodes, container) {
@@ -38,10 +37,6 @@ export function initializeSidebar() {
     if (e.target?.tagName === "LI") {
       openFile(e.target.dataset.filename, state.activePane);
     }
-  });
-
-  sidebarToggleBtn.addEventListener("click", () => {
-    appContainer.classList.toggle("sidebar-hidden");
   });
 
   // --- NEW: Initialize the sidebar resizer ---

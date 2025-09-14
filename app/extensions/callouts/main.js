@@ -1,4 +1,10 @@
-import {  WidgetType, Decoration, syntaxTree, EditorView, StateField } from "CodeMirrorBundle";
+import {
+  WidgetType,
+  Decoration,
+  syntaxTree,
+  EditorView,
+  StateField,
+} from "CodeMirrorBundle";
 
 // Map callout types to their Iconoir class names and display titles
 function getCalloutConfig(type) {
@@ -9,7 +15,7 @@ function getCalloutConfig(type) {
 
   return {
     // Fallback to a default icon if the CSS variable isn't defined
-    icon: iconClass || 'iconoir-info-circle',
+    icon: iconClass || "iconoir-info-circle",
     // Create a default title by capitalizing the type
     title: type.charAt(0).toUpperCase() + type.slice(1),
   };
@@ -34,7 +40,7 @@ class CalloutWidget extends WidgetType {
     const config = getCalloutConfig(this.type);
     const container = document.createElement("div");
     container.className = `callout callout-${this.type}`;
-    container.dataset.callout = this.type
+    container.dataset.callout = this.type;
     const header = container.appendChild(document.createElement("div"));
     header.className = "callout-header";
 
@@ -47,12 +53,12 @@ class CalloutWidget extends WidgetType {
     const editIcon = header.appendChild(document.createElement("span"));
     editIcon.className = "iconoir iconoir-edit-pencil edit-icon";
     editIcon.title = "Edit callout";
-    editIcon.addEventListener('mousedown', (e) => {
-        e.preventDefault(); // Prevent default text selection
-        // Manually set cursor inside the block to reveal source
-        view.dispatch({
-            selection: { anchor: this.fullNodeFrom + 1 } // +1 to go inside the block
-        });
+    editIcon.addEventListener("mousedown", (e) => {
+      e.preventDefault(); // Prevent default text selection
+      // Manually set cursor inside the block to reveal source
+      view.dispatch({
+        selection: { anchor: this.fullNodeFrom + 1 }, // +1 to go inside the block
+      });
     });
 
     const content = container.appendChild(document.createElement("div"));
@@ -64,7 +70,9 @@ class CalloutWidget extends WidgetType {
 
   // Prevents the widget from being editable directly
   // This is crucial when the widget replaces actual text
-  ignoreEvent() { return true; }
+  ignoreEvent() {
+    return true;
+  }
 }
 
 function buildCalloutDecorations(state) {
@@ -73,23 +81,29 @@ function buildCalloutDecorations(state) {
 
   syntaxTree(state).iterate({
     enter: (node) => {
-      if (node.name === "Blockquote" && node.from === state.doc.lineAt(node.from).from) {
+      if (
+        node.name === "Blockquote" &&
+        node.from === state.doc.lineAt(node.from).from
+      ) {
         const firstLine = state.doc.lineAt(node.from);
         const match = firstLine.text.trim().match(calloutRegex);
         if (match) {
           const calloutType = match[1].toLowerCase();
           const customTitle = match[2] || calloutType;
-const selection = state.selection.main;
-  const cursorInside = selection.from >= node.from && selection.to <= node.to;
+          const selection = state.selection.main;
+          const cursorInside =
+            selection.from >= node.from && selection.to <= node.to;
 
-  if (cursorInside) {
-    // If cursor is inside, just hide the header line and stop.
-    const firstLine = state.doc.lineAt(node.from);
-    decorations.push(Decoration.line({
-        class: "cm-callout-raw-header" // Use your new class name
-    }).range(firstLine.from));
-    return; // Exit the 'enter' function for this node
-  }
+          if (cursorInside) {
+            // If cursor is inside, just hide the header line and stop.
+            const firstLine = state.doc.lineAt(node.from);
+            decorations.push(
+              Decoration.line({
+                class: "cm-callout-raw-header", // Use your new class name
+              }).range(firstLine.from),
+            );
+            return; // Exit the 'enter' function for this node
+          }
           let contentMarkdown = "";
           const startContentLine = state.doc.lineAt(node.from).number + 1;
           const endContentLine = state.doc.lineAt(node.to).number;
@@ -100,11 +114,17 @@ const selection = state.selection.main;
               contentMarkdown += lineText.replace(/^>\s*/, "") + "\n";
             }
           }
-          
+
           // Create the widget decoration
           const deco = Decoration.replace({
-            widget: new CalloutWidget(calloutType, customTitle, contentMarkdown, node.from, node.to),
-            block: true
+            widget: new CalloutWidget(
+              calloutType,
+              customTitle,
+              contentMarkdown,
+              node.from,
+              node.to,
+            ),
+            block: true,
           });
           decorations.push(deco.range(node.from, node.to));
         }
@@ -114,25 +134,23 @@ const selection = state.selection.main;
   return Decoration.set(decorations, true);
 }
 
-
 const calloutStateField = StateField.define({
   create(state) {
     return buildCalloutDecorations(state);
   },
   update(decorations, transaction) {
-  // Add the check for transaction.selection
-  if (!transaction.docChanged && !transaction.selection) {
-    return decorations;
-  }
-  return buildCalloutDecorations(transaction.state);
-},
+    // Add the check for transaction.selection
+    if (!transaction.docChanged && !transaction.selection) {
+      return decorations;
+    }
+    return buildCalloutDecorations(transaction.state);
+  },
 
   // This provides the decorations from our field to the editor view
   provide(field) {
     return EditorView.decorations.from(field);
-  }
+  },
 });
-
 
 export function activate(app) {
   if (!app.state.cmExtensions) {

@@ -1,6 +1,6 @@
 :root {
-    /* Colors from the Obsidian primary theme: https://github.com/primary-theme/obsidian/blob/main/src/css/main.css */
-    --color-d-gray-10: hsla(32, 48%, 85%, 1);
+  /* Colors from the Obsidian primary theme: https://github.com/primary-theme/obsidian/blob/main/src/css/main.css */
+  --color-d-gray-10: hsla(32, 48%, 85%, 1);
   --color-d-gray-20: hsla(34, 39%, 74%, 1);
   --color-d-gray-30: hsla(34, 31%, 68%, 1);
   --color-d-gray-40: hsla(35, 27%, 55%, 1);
@@ -66,11 +66,10 @@
   --color-base-70: var(--color-d-gray-20);
   --color-base-100: var(--color-d-gray-10);
 
-
-    --background-color: var(--color-d-gray-100);
-    --background-primary-alt: var(--color-d-gray-110);
-    --background-primary: var(--color-d-gray-100);
-    --background-secondary: var(--color-d-gray-120);
+  --background-color: var(--color-d-gray-100);
+  --background-primary-alt: var(--color-d-gray-110);
+  --background-primary: var(--color-d-gray-100);
+  --background-secondary: var(--color-d-gray-120);
   --background-secondary-alt: var(--color-d-gray-120);
   --background-modifier-box-shadow: rgba(0, 0, 0, 0.3);
   --text-color: var(--color-d-gray-20);
@@ -85,10 +84,10 @@
   --callout-icon-info: iconoir-info-circle;
 }
 #metap-modal {
-    font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 .metap-modal-row {
-    padding: 0.2rem 0.4rem;
+  padding: 0.2rem 0.4rem;
 }
 body {
   margin: 0;

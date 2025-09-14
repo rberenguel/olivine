@@ -25,7 +25,8 @@
 }
 
 /* We no longer need flex-grow, as Grid handles the sizing */
-#sidebar nav, #sidebar-panel-container {
+#sidebar nav,
+#sidebar-panel-container {
   overflow-y: auto;
   min-height: 0; /* Prevents content overflow issues */
 }
@@ -70,6 +71,11 @@
   list-style: none;
   padding: 0.2rem 0.5rem;
   font-weight: bold;
+  margin-bottom: 0;
 }
-#notes-list summary::before { content: "▸ "; }
-#notes-list details[open] > summary::before { content: "▾ "; }
+#notes-list summary::before {
+  content: "▸ ";
+}
+#notes-list details[open] > summary::before {
+  content: "▾ ";
+}

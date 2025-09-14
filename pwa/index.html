@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../lib/pico.min.css" />
     <link rel="stylesheet" href="../fonts/victormono.css" />
     <link rel="stylesheet" href="../lib/metap/metap.css" />
-     <link rel="stylesheet" href="../styles/main.css" />
+    <link rel="stylesheet" href="../styles/main.css" />
     <link rel="stylesheet" href="../styles/sidebar.css" />
     <link rel="stylesheet" href="../styles/panes.css" />
     <link rel="stylesheet" href="../styles/editor.css" />
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="../fonts/iconoir/iconoir.css" />
     <link rel="icon" href="../media/favicon.ico" type="image/x-icon" />
     <link rel="manifest" href="manifest.json" />
+    <!--INJECT_OLIVINE_MODE-->
     <script type="importmap">
       {
         "imports": {
@@ -24,28 +25,27 @@
     </script>
   </head>
   <body>
-  <div id="app-container">
-    <div id="content-wrapper">
-      <aside id="sidebar">
-        <header id="sidebar-header">
-          <button id="open-vault-btn">Open Vault</button>
-          <button id="sidebar-toggle-btn">☰</button>
-        </header>
-        <nav>
-          <ul id="notes-list"></ul>
-        </nav>
-        <div class="gutter gutter-row" id="sidebar-gutter"></div>
-        <div id="sidebar-panel-container"></div>
-      </aside>
-      <div class="gutter gutter-col" id="main-gutter"></div>
-      <main id="main-content">
-        <div id="panes-container"></div>
-      </main>
-    </div>
+    <div id="app-container">
+      <div id="content-wrapper">
+        <aside id="sidebar">
+          <header id="sidebar-header">
+            <button id="open-vault-btn">Open Vault</button>
+          </header>
+          <nav>
+            <ul id="notes-list"></ul>
+          </nav>
+          <div class="gutter gutter-row" id="sidebar-gutter"></div>
+          <div id="sidebar-panel-container"></div>
+        </aside>
+        <div class="gutter gutter-col" id="main-gutter"></div>
+        <main id="main-content">
+          <div id="panes-container"></div>
+        </main>
+      </div>
 
-    <footer id="statusbar-container"></footer>
-  </div>
-  <script src="../lib/split-grid.js"></script>
+      <footer id="statusbar-container"></footer>
+    </div>
+    <script src="../lib/split-grid.js"></script>
     <script src="../lib/metap/metap.js"></script>
     <script src="pwa-bridge.js"></script>
     <script type="module" src="../app/main.js"></script>

@@ -1,5 +1,11 @@
 import { EditorState, EditorSelection, StateField } from "@codemirror/state";
-import { EditorView, keymap, Decoration, WidgetType, ViewPlugin } from "@codemirror/view";
+import {
+  EditorView,
+  keymap,
+  Decoration,
+  WidgetType,
+  ViewPlugin,
+} from "@codemirror/view";
 import { defaultKeymap } from "@codemirror/commands";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { autocompletion, completionKeymap } from "@codemirror/autocomplete";

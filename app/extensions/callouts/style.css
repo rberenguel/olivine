@@ -2,9 +2,8 @@
 
 /* Base container for the entire callout block */
 .callout {
-
-    --callout-color-opacity: 32.5%;
-        --callout-rgb-general: 182, 196, 182;
+  --callout-color-opacity: 32.5%;
+  --callout-rgb-general: 182, 196, 182;
   --callout-rgb-note: 200, 175, 155;
   --callout-rgb-summary: 234, 181, 52;
   --callout-rgb-abstract: 34, 152, 225;
@@ -33,17 +32,23 @@
   --callout-rgb-cite: 237, 217, 162;
   --callout-shadow-offset: 4px;
   --callout-content-shadow-blur: 3px;
-  --callout-container-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.18),
-                              0px 2px 6px 0px rgba(0, 0, 0, 0.28);
-  --callout-title-shadow: inset 0px -1px 1px 0px rgba(0, 0, 0, 0.25),
-                          inset 0px 1px 1px 0px rgba(255, 255, 255, 0.1);
-  
-  background-color: color-mix(in srgb,rgba(var(--callout-color)) var(--callout-color-opacity),var(--background-color));
+  --callout-container-shadow:
+    inset 0px 0px 0px 1px rgba(0, 0, 0, 0.18),
+    0px 2px 6px 0px rgba(0, 0, 0, 0.28);
+  --callout-title-shadow:
+    inset 0px -1px 1px 0px rgba(0, 0, 0, 0.25),
+    inset 0px 1px 1px 0px rgba(255, 255, 255, 0.1);
+
+  background-color: color-mix(
+    in srgb,
+    rgba(var(--callout-color)) var(--callout-color-opacity),
+    var(--background-color)
+  );
   border-radius: 6px; /* Rounded corners */
   margin-right: 2rem;
   margin-left: 2rem;
   overflow: hidden; /* Ensures borders/shadows don't bleed */
- box-shadow: var(--callout-container-shadow);
+  box-shadow: var(--callout-container-shadow);
 }
 
 /* Header bar for the callout */
@@ -72,24 +77,24 @@
   font-size: 1.2em;
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-
 }
 .callout-header .edit-icon:hover {
   color: white;
-
 }
 
 /* Content area of the callout */
 .callout-content {
-          --callout-content-background: color-mix(
-                                  in srgb,
-                                  var(--background-primary-alt) 50%,
-                                  var(--background-primary)
-                                  );
-    
-    --callout-content-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.18),
-                              inset 0px calc(-1 * var(--callout-shadow-offset) - 1px) var(--callout-content-shadow-blur) 0px rgba(0, 0, 0, 0.3);
-                              background-color: var(--callout-content-background);
+  --callout-content-background: color-mix(
+    in srgb,
+    var(--background-primary-alt) 50%,
+    var(--background-primary)
+  );
+
+  --callout-content-shadow:
+    inset 0px 0px 0px 1px rgba(0, 0, 0, 0.18),
+    inset 0px calc(-1 * var(--callout-shadow-offset) - 1px)
+      var(--callout-content-shadow-blur) 0px rgba(0, 0, 0, 0.3);
+  background-color: var(--callout-content-background);
   padding: 10px 12px;
   line-height: 1.5;
   color: var(--text-color); /* Content text color */
@@ -104,103 +109,105 @@
 
 /* --- Type-specific theming --- */
 
-.callout[data-callout=note] {
+.callout[data-callout="note"] {
   --callout-icon: var(--callout-icon-note);
   --callout-color: var(--callout-rgb-note);
 }
-.callout[data-callout=abstract] {
+.callout[data-callout="abstract"] {
   --callout-icon: var(--callout-icon-abstract);
   --callout-color: var(--callout-rgb-abstract);
 }
-.callout[data-callout=summary] {
+.callout[data-callout="summary"] {
   --callout-icon: var(--callout-icon-summary);
   --callout-color: var(--callout-rgb-summary);
 }
-.callout[data-callout=tldr], .callout[data-callout="tl;dr"] {
+.callout[data-callout="tldr"],
+.callout[data-callout="tl;dr"] {
   --callout-icon: var(--callout-icon-tldr);
   --callout-color: var(--callout-rgb-tldr);
 }
-.callout[data-callout=info] {
+.callout[data-callout="info"] {
   --callout-icon: var(--callout-icon-info);
   --callout-color: var(--callout-rgb-info);
 }
-.callout[data-callout=todo] {
+.callout[data-callout="todo"] {
   --callout-icon: var(--callout-icon-todo);
   --callout-color: var(--callout-rgb-todo);
 }
-.callout[data-callout=tip] {
+.callout[data-callout="tip"] {
   --callout-icon: var(--callout-icon-tip);
   --callout-color: var(--callout-rgb-tip);
 }
-.callout[data-callout=hint] {
+.callout[data-callout="hint"] {
   --callout-icon: var(--callout-icon-hint);
   --callout-color: var(--callout-rgb-hint);
 }
-.callout[data-callout=important] {
+.callout[data-callout="important"] {
   --callout-icon: var(--callout-icon-important);
   --callout-color: var(--callout-rgb-important);
 }
-.callout[data-callout=success] {
+.callout[data-callout="success"] {
   --callout-icon: var(--callout-icon-success);
   --callout-color: var(--callout-rgb-success);
 }
-.callout[data-callout=check] {
+.callout[data-callout="check"] {
   --callout-icon: var(--callout-icon-check);
   --callout-color: var(--callout-rgb-check);
 }
-.callout[data-callout=done] {
+.callout[data-callout="done"] {
   --callout-icon: var(--callout-icon-done);
   --callout-color: var(--callout-rgb-done);
 }
-.callout[data-callout=question] {
+.callout[data-callout="question"] {
   --callout-color: var(--callout-rgb-question);
 }
-.callout[data-callout=help] {
+.callout[data-callout="help"] {
   --callout-icon: var(--callout-icon-help);
   --callout-color: var(--callout-rgb-help);
 }
-.callout[data-callout=faq] {
+.callout[data-callout="faq"] {
   --callout-color: var(--callout-rgb-faq);
 }
-.callout[data-callout=warning] {
+.callout[data-callout="warning"] {
   --callout-color: var(--callout-rgb-warning);
 }
-.callout[data-callout=caution] {
+.callout[data-callout="caution"] {
   --callout-icon: var(--callout-icon-caution);
   --callout-color: var(--callout-rgb-caution);
 }
-.callout[data-callout=attention] {
+.callout[data-callout="attention"] {
   --callout-icon: var(--callout-icon-attention);
   --callout-color: var(--callout-rgb-attention);
 }
-.callout[data-callout=failure], .callout[data-callout=fail] {
+.callout[data-callout="failure"],
+.callout[data-callout="fail"] {
   --callout-icon: var(--callout-icon-fail);
   --callout-color: var(--callout-rgb-fail);
 }
-.callout[data-callout=missing] {
+.callout[data-callout="missing"] {
   --callout-icon: var(--callout-icon-missing);
   --callout-color: var(--callout-rgb-missing);
 }
-.callout[data-callout=danger] {
+.callout[data-callout="danger"] {
   --callout-icon: var(--callout-icon-danger);
   --callout-color: var(--callout-rgb-danger);
 }
-.callout[data-callout=error] {
+.callout[data-callout="error"] {
   --callout-icon: var(--callout-icon-error);
   --callout-color: var(--callout-rgb-error);
 }
-.callout[data-callout=bug] {
+.callout[data-callout="bug"] {
   --callout-icon: var(--callout-icon-bug);
   --callout-color: var(--callout-rgb-bug);
 }
-.callout[data-callout=example] {
+.callout[data-callout="example"] {
   --callout-icon: var(--callout-icon-example);
   --callout-color: var(--callout-rgb-example);
 }
-.callout[data-callout=quote] {
+.callout[data-callout="quote"] {
   --callout-color: var(--callout-rgb-quote);
 }
-.callout[data-callout=cite] {
+.callout[data-callout="cite"] {
   --callout-icon: var(--callout-icon-cite);
   --callout-color: var(--callout-rgb-cite);
 }

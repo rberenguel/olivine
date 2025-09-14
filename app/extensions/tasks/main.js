@@ -17,9 +17,9 @@ const taskClickHandler = EditorView.domEventHandlers({
 
           // Dispatch a transaction to replace the text
           view.dispatch({
-            changes: { from: node.from, to: node.to, insert: newMarker }
+            changes: { from: node.from, to: node.to, insert: newMarker },
           });
-          
+
           // Prevent the editor from also trying to place a cursor
           event.preventDefault();
           handled = true;
@@ -28,7 +28,7 @@ const taskClickHandler = EditorView.domEventHandlers({
     });
 
     return handled;
-  }
+  },
 });
 
 export function activate(app) {

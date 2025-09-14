@@ -8,10 +8,6 @@ const staticCommands = [
   { title: "New Note", lambda: createNewFile },
   { title: "Split horizontally", lambda: () => splitActivePane("horizontal") },
   { title: "Split vertically", lambda: () => splitActivePane("vertical") },
-  {
-    title: "Toggle sidebar",
-    lambda: () => document.getElementById("sidebar-toggle-btn").click(),
-  },
   { title: "Re-index Notes", lambda: () => loadAndIndexNotes() },
 ];
 
