@@ -8,4 +8,5 @@ export default [
   "../app/extensions/link-widgets",
   "../app/extensions/tasks",
   "../app/extensions/callouts",
+  "../app/extensions/snipper",
 ];

@@ -1,0 +1,5 @@
+{
+  "name": "Snipper",
+  "main": "./main.js",
+  "style": "./style.css"
+}

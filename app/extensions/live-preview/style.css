@@ -39,3 +39,23 @@
 .cm-strong {
   color: var(--color-d-red-30);
 }
+
+.cm-tag {
+  color: var(--color-d-blue-30);
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 1em;
+  padding-inline-start: 0.6em;
+  padding-inline-end: 0.6em;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.cm-tag:hover {
+  color: var(--color-d-blue-20);
+}
+
+.cm-hr {
+  border: none;
+  border-top: 2px solid var(--color-d-gray-80);
+  margin: 0;
+}
