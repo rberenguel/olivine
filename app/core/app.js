@@ -129,14 +129,21 @@ export function createApp() {
   // When a file is opened, emit an event
   const originalOpenFile = app.workspace.openFile;
   app.workspace.openFile = async (filename, pane) => {
+    await window.idbStore.set("olivine-last-open-file", filename);
     await originalOpenFile(filename, pane);
     app.events.emit("file:opened", { filename, pane });
   };
 
   const originalInit = app.workspace.initializeFileHandling;
   app.workspace.initializeFileHandling = async () => {
+    const lastFile = await window.idbStore.get("olivine-last-open-file");
     await originalInit();
     app.events.emit("workspace:ready", { files: app.state.allFilePaths });
+    // --- REOPEN LAST FILE ---
+    // Ensure the file still exists in the current vault before opening
+    if (lastFile && app.state.allFilePaths.includes(lastFile)) {
+      app.workspace.openFile(lastFile, app.state.activePane);
+    }
   };
 
   // When the active pane changes, emit an event

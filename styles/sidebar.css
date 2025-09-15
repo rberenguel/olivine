@@ -13,7 +13,7 @@
 }
 
 #right-sidebar {
-    border-left: 1px solid var(--border-color);
+  border-left: 1px solid var(--border-color);
 }
 
 /* Hide/show transition */
@@ -63,13 +63,11 @@
 
 /* Generalize selector */
 .sidebar-panel-container {
-  padding: 0.5rem;
 }
 
 #left-sidebar-panel-container {
-    border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color);
 }
-
 
 /* File Tree Styles */
 #notes-list ul {

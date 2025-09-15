@@ -1,8 +1,10 @@
 import { openFile } from "../core/files.js";
 import { state } from "../core/state.js";
 
-// Keep this reference for the file list in the left sidebar
 const notesList = document.getElementById("notes-list");
+
+// --- Store Split.js instances so they can be destroyed and recreated ---
+let leftPanelSplit, rightPanelSplit;
 
 function renderTreeToDOM(nodes, container) {
   container.innerHTML = "";
@@ -27,68 +29,119 @@ function renderTreeToDOM(nodes, container) {
   }
 }
 
+/**
+ * Dynamically adds a panel to a container, creating gutters and re-initializing
+ * the Split.js layout.
+ * @param {HTMLElement} container - The container element for the panels.
+ * @param {HTMLElement} element - The new panel element to add.
+ * @param {object} splitRef - A reference object to store the Split.js instance.
+ */
+function addResizablePanel(container, element, splitRef) {
+  // If this is not the first panel, add a gutter before it.
+  if (container.children.length > 0) {
+    const gutter = document.createElement("div");
+    gutter.className = "gutter gutter-row";
+    container.appendChild(gutter);
+  }
+  container.appendChild(element);
+
+  // If there is more than one panel, activate the grid layout and splitter.
+  const panels = Array.from(container.children).filter(
+    (el) => !el.classList.contains("gutter"),
+  );
+  if (panels.length > 1) {
+    // Destroy the previous Split instance if it exists
+    if (splitRef.instance) {
+      splitRef.instance.destroy();
+    }
+
+    container.style.display = "grid";
+
+    const gutters = Array.from(container.querySelectorAll(".gutter"));
+    const tracks = [];
+    panels.forEach(() => tracks.push("1fr"));
+    gutters.forEach(() => tracks.push("8px"));
+
+    // We need to interleave the gutters between the panels for the grid template
+    const gridTemplateRows = panels.map(() => "1fr").join(" 8px ");
+    container.style.gridTemplateRows = gridTemplateRows;
+
+    splitRef.instance = Split({
+      rowGutters: gutters.map((gutter, i) => ({
+        track: i * 2 + 1, // Gutters are at odd-numbered tracks (1, 3, 5...)
+        element: gutter,
+      })),
+    });
+  }
+}
+
 export function loadSidebarList(tree) {
   renderTreeToDOM(tree, notesList);
 }
 
 export function initializeSidebar(app) {
-  // Handle file clicks in the left sidebar
   notesList.addEventListener("click", (e) => {
     if (e.target?.tagName === "LI") {
-      openFile(e.target.dataset.filename, state.activePane);
+      app.workspace.openFile(e.target.dataset.filename, state.activePane);
     }
   });
 
-  // --- MODIFIED: Initialize a multi-column layout ---
   const contentWrapper = document.getElementById("content-wrapper");
-  // Set initial sizes: left-sidebar | gutter | main | gutter | right-sidebar
-  contentWrapper.style.gridTemplateColumns = "250px 8px 1fr 8px 300px";
+  contentWrapper.style.gridTemplateColumns =
+    "250px 8px 1fr 8px calc(15vw + 1.5rem)";
 
   Split({
     columnGutters: [
-      {
-        track: 1, // Gutter between left-sidebar and main
-        element: document.getElementById("main-gutter"),
-      },
-      {
-        track: 3, // Gutter between main and right-sidebar
-        element: document.getElementById("right-gutter"),
-      },
+      { track: 1, element: document.getElementById("main-gutter") },
+      { track: 3, element: document.getElementById("right-gutter") },
     ],
   });
 
-  // --- Initialize the resizer for the left sidebar's internal panels ---
   const leftSidebarEl = document.getElementById("left-sidebar");
   leftSidebarEl.style.gridTemplateRows = "auto 1fr 8px 1fr";
 
   Split({
     rowGutters: [
-      {
-        track: 2, // The gutter is at track 2
-        element: document.getElementById("left-sidebar-gutter"),
-      },
+      { track: 2, element: document.getElementById("left-sidebar-gutter") },
     ],
   });
 
-  Split({
-    rowGutters: [
-      {
-        track: 2, // The gutter is at track 2
-        element: document.getElementById("right-sidebar-gutter"),
-      },
-    ],
-  });
-
-  // --- MODIFIED: Update the app.ui.registerView function ---
+  // --- REPLACED: New dynamic registration logic ---
   app.ui.registerView = (viewName, element) => {
-    if (viewName === "sidebar-panel") {
-      document.getElementById("left-sidebar-panel-container").appendChild(element);
-    } else if (viewName === "right-sidebar-panel") {
-      document.getElementById("right-sidebar-panel-container").appendChild(element);
-    } else if (viewName === "statusbar") {
-      // Assuming statusbar exists elsewhere, keeping this logic.
-      const statusbar = document.getElementById('statusbar-container');
-      if (statusbar) statusbar.appendChild(element);
+    switch (viewName) {
+      case "sidebar-panel": {
+        const container = document.getElementById(
+          "left-sidebar-panel-container",
+        );
+        addResizablePanel(container, element, {
+          get instance() {
+            return leftPanelSplit;
+          },
+          set instance(val) {
+            leftPanelSplit = val;
+          },
+        });
+        break;
+      }
+      case "right-sidebar-panel": {
+        const container = document.getElementById(
+          "right-sidebar-panel-container",
+        );
+        addResizablePanel(container, element, {
+          get instance() {
+            return rightPanelSplit;
+          },
+          set instance(val) {
+            rightPanelSplit = val;
+          },
+        });
+        break;
+      }
+      case "statusbar": {
+        const statusbar = document.getElementById("statusbar-container");
+        if (statusbar) statusbar.appendChild(element);
+        break;
+      }
     }
   };
 }

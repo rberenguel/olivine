@@ -84,12 +84,21 @@
   --callout-icon-info: iconoir-info-circle;
 
   --font-monospace: "monoidregular";
+
+  --h1-color: var(--color-d-gray-10);
+  --h2-color: var(--color-d-gray-10);
+  --h3-color: var(--color-d-gray-10);
+  --h4-color: var(--color-d-gray-10);
+  --h5-color: var(--color-d-gray-10);
+  --h6-color: var(--color-d-gray-10);
 }
 
 /* Reset for pico.css buttons */
 
-[type="button"], [type="reset"], [type="submit"] {
-    margin-bottom: unset;
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  margin-bottom: unset;
 }
 
 #metap-modal {

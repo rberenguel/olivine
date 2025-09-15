@@ -1,41 +1,45 @@
+const idbStore = {
+  db: null,
+  async getDb() {
+    if (this.db) return this.db;
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open("olivine-db", 1);
+      request.onupgradeneeded = () => {
+        request.result.createObjectStore("keyval");
+      };
+      request.onsuccess = () => {
+        this.db = request.result;
+        resolve(this.db);
+      };
+      request.onerror = (e) => reject(e);
+    });
+  },
+  async get(key) {
+    const db = await this.getDb();
+    return new Promise((resolve) => {
+      const tx = db.transaction("keyval", "readonly");
+      const store = tx.objectStore("keyval");
+      const req = store.get(key);
+      req.onsuccess = () => resolve(req.result);
+    });
+  },
+  async set(key, value) {
+    const db = await this.getDb();
+    const tx = db.transaction("keyval", "readwrite");
+    const store = tx.objectStore("keyval");
+    store.put(value, key);
+    return tx.done;
+  },
+};
+
+window.idbStore = idbStore;
+
+window.idbStore.getDb();
+
 if (window.__OLIVINE_MODE__ !== "remote") {
   let directoryHandle;
   let fileHandles = new Map();
   let initialFilesRequest = null;
-
-  const idbStore = {
-    db: null,
-    async getDb() {
-      if (this.db) return this.db;
-      return new Promise((resolve, reject) => {
-        const request = indexedDB.open("olivine-db", 1);
-        request.onupgradeneeded = () => {
-          request.result.createObjectStore("keyval");
-        };
-        request.onsuccess = () => {
-          this.db = request.result;
-          resolve(this.db);
-        };
-        request.onerror = (e) => reject(e);
-      });
-    },
-    async get(key) {
-      const db = await this.getDb();
-      return new Promise((resolve) => {
-        const tx = db.transaction("keyval", "readonly");
-        const store = tx.objectStore("keyval");
-        const req = store.get(key);
-        req.onsuccess = () => resolve(req.result);
-      });
-    },
-    async set(key, value) {
-      const db = await this.getDb();
-      const tx = db.transaction("keyval", "readwrite");
-      const store = tx.objectStore("keyval");
-      store.put(value, key);
-      return tx.done;
-    },
-  };
 
   async function verifyPermission(handle) {
     const options = { mode: "readwrite" };

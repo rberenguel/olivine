@@ -57,10 +57,18 @@ const livePreviewPlugin = ViewPlugin.fromClass(
             const { type, from, to } = node;
             switch (type.name) {
               case "HeaderMark":
+                decorations.push(
+                  Decoration.mark({ class: "header-mark" }).range(from, to),
+                );
+                break;
               case "QuoteMark":
+                decorations.push(
+                  Decoration.mark({ class: "quote-mark" }).range(from, to),
+                );
+                break;
               case "ListMark":
                 decorations.push(
-                  Decoration.mark({ class: "list-bullet" }).range(from, to),
+                  Decoration.mark({ class: "list-mark" }).range(from, to),
                 );
                 break;
               case "EmphasisMark":

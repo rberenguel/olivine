@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const editorContainer = document.getElementById("editor-container");
   const currentFileTitle = document.getElementById("current-file-title"); // <-- Add this
 
-  // --- IndexedDB Helper --- (This section is unchanged)
+  // --- IndexedDB Helper ---
   const idb = {
     db: null,
     async init() {

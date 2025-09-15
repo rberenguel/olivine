@@ -1,15 +1,17 @@
 .outline-container {
   /* TODO This should become some sort of default for sidebars*/
+  margin: 0.5rem;
   width: 100%;
   background-color: var(--color-d-gray-120);
   border: 1px solid var(--color-d-gray-60);
   border-radius: 0.3rem;
+  height: fit-content;
+  max-width: 15vw;
 }
 
 .outline-content {
   padding: 0.2rem;
 }
-
 
 .outline-h1,
 .outline-h2,
@@ -19,7 +21,6 @@
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 .outline-h2 {
   margin-left: 0.1rem;
@@ -31,11 +32,22 @@
   margin-left: 0.3rem;
 }
 .outline-container ul {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .outline-container li {
-    padding: 0;
-    font-size: 75%;
+  padding: 0;
+  font-style: italic;
+  font-size: 0.5rem;
+  text-wrap-mode: wrap;
+}
+
+.outline-container li::first-line {
+  font-size: 0.75rem;
+  font-style: normal;
+}
+
+.outline-container li::before {
+  content: "▸ ";
 }

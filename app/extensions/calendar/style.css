@@ -1,63 +1,65 @@
 #calendar-container {
+  margin: 0.5rem;
   width: 100%;
   background-color: var(--color-d-gray-120);
   border: 1px solid var(--color-d-gray-60);
   border-radius: 0.3rem;
+  height: fit-content;
+  max-width: 15vw;
 }
 
 .vanilla-calendar-days {
-    justify-items: none;
-    row-gap: 0.3rem;
+  justify-items: none;
+  row-gap: 0.3rem;
 }
 
 .vanilla-calendar-month {
-    font-size: 0.7rem;
+  font-size: 0.7rem;
 }
 
 .vanilla-calendar-year {
-    font-size: 0.7rem;
-
+  font-size: 0.7rem;
 }
 
-[data-calendar-theme=dark] .vanilla-calendar-month {
-    color: var(--text-color);
+[data-calendar-theme="dark"] .vanilla-calendar-month {
+  color: var(--text-color);
 }
 
 .vanilla-calendar-arrow {
-    color: var(--text-color);
-    filter: brightness(0.4) sepia(0.5);
+  color: var(--text-color);
+  filter: brightness(0.4) sepia(0.5);
 }
 
-[data-calendar-theme=dark] .vanilla-calendar-year {
-    color: var(--text-color);
+[data-calendar-theme="dark"] .vanilla-calendar-year {
+  color: var(--text-color);
 }
 
 .vanilla-calendar {
-    padding: 0.3rem;
-    border-radius: 0.1rem;
+  padding: 0.3rem;
+  border-radius: 0.1rem;
 }
 
 .vanilla-calendar-week__day {
-    font-size: 0.6rem;
-    min-width: unset;
+  font-size: 0.6rem;
+  min-width: unset;
 }
 
-[data-calendar-theme=dark] .vanilla-calendar-week__day {
-    color: var(--text-color);
+[data-calendar-theme="dark"] .vanilla-calendar-week__day {
+  color: var(--text-color);
 }
 
-[data-calendar-theme=dark] .vanilla-calendar-day__btn {
-    background-color: var(--color-d-gray-100);
-    min-height: 0.3rem;
-    min-width: 0.1rem;
-    border-radius: unset;
-    margin-left: 0.1rem;
+[data-calendar-theme="dark"] .vanilla-calendar-day__btn {
+  background-color: var(--color-d-gray-100);
+  min-height: 0.3rem;
+  min-width: 0.1rem;
+  border-radius: unset;
+  margin-left: 0.1rem;
 }
 
 /* Style for days that have a corresponding journal entry */
 .vanilla-calendar-day__btn.calendar-existing-day {
-    background-color: var(--accent-bg);
-    color: var(--text-color);
-    border: 1px solid color-mix(
-    in srgb,var(--color-d-yellow-40), var(--accent-bg));
+  background-color: var(--accent-bg);
+  color: var(--text-color);
+  border: 1px solid
+    color-mix(in srgb, var(--color-d-yellow-40), var(--accent-bg));
 }

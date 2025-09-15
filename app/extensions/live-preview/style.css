@@ -1,15 +1,47 @@
 /* Live Preview Styles */
+
+.ͼh {
+  color: unset;
+}
+
+.ͼj {
+  color: unset;
+}
+
 .cm-editor .cm-line.cm-header-1 {
+  color: var(--h1-color) !important;
   font-size: 2em;
   font-weight: bold;
 }
 .cm-editor .cm-line.cm-header-2 {
+  color: var(--h2-color) !important;
   font-size: 1.6em;
   font-weight: bold;
 }
 .cm-editor .cm-line.cm-header-3 {
+  color: var(--h3-color) !important;
   font-size: 1.4em;
   font-weight: bold;
+}
+.cm-editor .cm-line.cm-header-4 {
+  color: var(--h4-color) !important;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.cm-editor .cm-line.cm-header-5 {
+  color: var(--h5-color) !important;
+  font-size: 1.15em;
+  font-weight: bold;
+}
+.cm-editor .cm-line.cm-header-6 {
+  color: var(--h6-color) !important;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.cm-editor .header-mark {
+  color: var(--color-d-gray-60);
 }
 
 .cm-editor .cm-line.cm-quote {
@@ -36,8 +68,18 @@
   color: var(--color-d-blue-30);
 }
 
+.cm-em .ͼj {
+  color: var(--color-d-blue-30);
+  filter: opacity(0.5) saturate(0.5);
+}
+
 .cm-strong {
   color: var(--color-d-red-30);
+}
+
+.cm-strong .ͼj {
+  color: var(--color-d-red-30);
+  filter: opacity(0.5) saturate(0.5);
 }
 
 .cm-tag {

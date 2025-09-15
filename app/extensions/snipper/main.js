@@ -23,6 +23,13 @@ class SnippetWidget extends WidgetType {
     this.saveTimeout = null;
   }
 
+  // --- ADDED: The eq method to prevent unnecessary re-renders ---
+  eq(other) {
+    // If the style and source path are the same, CodeMirror can skip
+    // redrawing the widget, which prevents the flicker.
+    return this.style === other.style && this.sourcePath === other.sourcePath;
+  }
+
   toDOM(view) {
     const container = document.createElement("div");
     container.className = `snippet-widget ${this.style}`;
@@ -33,30 +40,24 @@ class SnippetWidget extends WidgetType {
 
   // Renders the read-only view of the snippet
   async renderView(view, container) {
-    console.log("Snipper: Rendering the view");
     container.innerHTML = ""; // Clear existing content
-    container.onclick = () => this.renderEdit(view, container); // Re-attach click listener
+    container.onclick = () => {
+      directClick = true;
+      this.renderEdit(view, container);
+    }; // Re-attach click listener
     const snippetPath = this.getSnippetPath();
 
     try {
       const content = await window.app.workspace.readFile(snippetPath);
-      console.log("Snipper:", snippetPath, content);
-      // --- FIX STARTS HERE ---
-      // Explicitly check for null/undefined, allowing empty strings to be handled.
       if (content != null) {
-        // Use textContent for now to guarantee something is displayed.
         container.textContent = content;
-        // If the content is an empty string, show the placeholder text.
         if (content === "") {
           container.textContent = "Empty snippet. Click to edit.";
         }
       } else {
-        // This case would indicate an unexpected error from the file API.
         container.textContent = "Error reading snippet file.";
       }
-      // --- FIX ENDS HERE ---
     } catch (e) {
-      // If the file doesn't exist, ensure the folder exists and create the file.
       console.warn(e);
       try {
         await window.app.workspace.createNewFile(snippetPath);
@@ -126,8 +127,11 @@ class SnippetWidget extends WidgetType {
   }
 }
 
+let directClick = false;
+
 // This function is now standalone to avoid `this` context issues.
 function buildDecorations(state) {
+  console.log(state);
   const decorations = [];
   const selection = state.selection.main;
 
@@ -141,7 +145,10 @@ function buildDecorations(state) {
         if (codeBlockHeader.startsWith("```snippet")) {
           const cursorInside =
             selection.from >= node.from && selection.to <= node.to;
-          if (cursorInside) return;
+          if (cursorInside && !directClick) {
+            directClick = false;
+            return;
+          }
 
           const style =
             codeBlockHeader.replace("```snippet", "").trim() ||
@@ -164,10 +171,12 @@ function buildDecorations(state) {
 // This StateField finds ` ```snippet ` blocks and replaces them.
 const snippetPlugin = StateField.define({
   create(state) {
+    console.log("Snippet created");
     return buildDecorations(state);
   },
   update(decorations, transaction) {
-    if (!transaction.docChanged && !transaction.selection) return decorations;
+    console.log(transaction);
+    if (!transaction.docChanged) return decorations;
     return buildDecorations(transaction.state);
   },
   provide(field) {
