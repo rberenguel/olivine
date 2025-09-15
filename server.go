@@ -73,7 +73,7 @@ func main() {
 	fileServer := http.FileServer(http.Dir(pwaPath))
 	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Diagnostic logging to see every request path.
-		log.Printf("Request received for: %s", r.URL.Path)
+		// log.Printf("Request received for: %s", r.URL.Path)
 
 		// The user accesses the PWA via the /pwa/ directory. We must match this path.
 		if r.URL.Path == "/pwa/" || r.URL.Path == "/pwa/index.html" {
@@ -89,7 +89,7 @@ func main() {
 
 	// 5. Start Server
 	addr := fmt.Sprintf(":%d", port)
-	log.Printf("Serving PWA from '%s' on https://localhost%s", pwaPath, addr)
+	log.Printf("Serving PWA from '%s' on https://localhost%s/pwa", pwaPath, addr)
 	log.Printf("API is available at https://localhost%s/api", addr)
 	err = http.ListenAndServeTLS(addr, certFile, keyFile, nil)
 	if err != nil {
