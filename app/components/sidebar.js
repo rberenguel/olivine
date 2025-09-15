@@ -1,9 +1,8 @@
 import { openFile } from "../core/files.js";
 import { state } from "../core/state.js";
 
+// Keep this reference for the file list in the left sidebar
 const notesList = document.getElementById("notes-list");
-const appContainer = document.getElementById("app-container");
-const sidebarEl = document.getElementById("sidebar"); // Get the sidebar element
 
 function renderTreeToDOM(nodes, container) {
   container.innerHTML = "";
@@ -15,7 +14,7 @@ function renderTreeToDOM(nodes, container) {
       details.appendChild(summary);
 
       const sublist = document.createElement("ul");
-      renderTreeToDOM(node.children, sublist); // Recurse for children
+      renderTreeToDOM(node.children, sublist);
       details.appendChild(sublist);
       container.appendChild(details);
     } else {
@@ -32,24 +31,64 @@ export function loadSidebarList(tree) {
   renderTreeToDOM(tree, notesList);
 }
 
-export function initializeSidebar() {
+export function initializeSidebar(app) {
+  // Handle file clicks in the left sidebar
   notesList.addEventListener("click", (e) => {
     if (e.target?.tagName === "LI") {
       openFile(e.target.dataset.filename, state.activePane);
     }
   });
 
-  // --- NEW: Initialize the sidebar resizer ---
-  // Set initial sizes: header=auto, nav=1fr, gutter=8px, panels=1fr
-  sidebarEl.style.gridTemplateRows = "auto 1fr 8px 1fr";
+  // --- MODIFIED: Initialize a multi-column layout ---
+  const contentWrapper = document.getElementById("content-wrapper");
+  // Set initial sizes: left-sidebar | gutter | main | gutter | right-sidebar
+  contentWrapper.style.gridTemplateColumns = "250px 8px 1fr 8px 300px";
+
+  Split({
+    columnGutters: [
+      {
+        track: 1, // Gutter between left-sidebar and main
+        element: document.getElementById("main-gutter"),
+      },
+      {
+        track: 3, // Gutter between main and right-sidebar
+        element: document.getElementById("right-gutter"),
+      },
+    ],
+  });
+
+  // --- Initialize the resizer for the left sidebar's internal panels ---
+  const leftSidebarEl = document.getElementById("left-sidebar");
+  leftSidebarEl.style.gridTemplateRows = "auto 1fr 8px 1fr";
 
   Split({
     rowGutters: [
       {
-        track: 2, // The gutter is at track 2 (0=header, 1=nav, 2=gutter, 3=panels)
-        element: document.getElementById("sidebar-gutter"),
+        track: 2, // The gutter is at track 2
+        element: document.getElementById("left-sidebar-gutter"),
       },
     ],
   });
-  // ------------------------------------------
+
+  Split({
+    rowGutters: [
+      {
+        track: 2, // The gutter is at track 2
+        element: document.getElementById("right-sidebar-gutter"),
+      },
+    ],
+  });
+
+  // --- MODIFIED: Update the app.ui.registerView function ---
+  app.ui.registerView = (viewName, element) => {
+    if (viewName === "sidebar-panel") {
+      document.getElementById("left-sidebar-panel-container").appendChild(element);
+    } else if (viewName === "right-sidebar-panel") {
+      document.getElementById("right-sidebar-panel-container").appendChild(element);
+    } else if (viewName === "statusbar") {
+      // Assuming statusbar exists elsewhere, keeping this logic.
+      const statusbar = document.getElementById('statusbar-container');
+      if (statusbar) statusbar.appendChild(element);
+    }
+  };
 }

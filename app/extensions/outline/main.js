@@ -1,11 +1,14 @@
 import { syntaxTree } from "CodeMirrorBundle";
 import { EditorView, EditorSelection } from "CodeMirrorBundle";
 
-function updateOutline(pane, listElement) {
+function updateOutline(pane, listElement, panelContainer) {
   listElement.innerHTML = ""; // Clear the old outline
 
-  if (!pane) return;
-
+  if (!pane) {
+    panelContainer.style.display = "none"
+    return;
+  }
+  panelContainer.style.display = "block"
   const doc = pane.editorView.state.doc;
 
   syntaxTree(pane.editorView.state).iterate({
@@ -38,19 +41,21 @@ function updateOutline(pane, listElement) {
 
 export function activate(app) {
   console.log("Activating Outline Extension");
-
   // 1. Create the UI for the panel
   const panelContainer = document.createElement("div");
   panelContainer.classList.add("outline-container");
+  const content = document.createElement("div");
+  content.classList.add("outline-content");
   const outlineList = document.createElement("ul");
-  panelContainer.appendChild(outlineList);
+  panelContainer.appendChild(content);
+  content.appendChild(outlineList);
 
   // 2. Register the panel with the UI
-  app.ui.registerView("sidebar-panel", panelContainer);
+  app.ui.registerView("right-sidebar-panel", panelContainer);
 
   // 3. Listen for events to update the outline
-  const refresh = () => updateOutline(app.state.activePane, outlineList);
-
+  const refresh = () => updateOutline(app.state.activePane, outlineList, panelContainer);
+  refresh()
   app.events.on("file:opened", refresh);
   app.events.on("file:saved", refresh); // file:saved is a good proxy for content changed
 }

@@ -85,6 +85,13 @@
 
   --font-monospace: "monoidregular";
 }
+
+/* Reset for pico.css buttons */
+
+[type="button"], [type="reset"], [type="submit"] {
+    margin-bottom: unset;
+}
+
 #metap-modal {
   font-size: 0.8rem;
 }

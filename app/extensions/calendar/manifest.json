@@ -1,0 +1,5 @@
+{
+  "name": "Calendar View",
+  "main": "./main.js",
+  "style": "./style.css"
+}

@@ -1,3 +1,16 @@
+.outline-container {
+  /* TODO This should become some sort of default for sidebars*/
+  width: 100%;
+  background-color: var(--color-d-gray-120);
+  border: 1px solid var(--color-d-gray-60);
+  border-radius: 0.3rem;
+}
+
+.outline-content {
+  padding: 0.2rem;
+}
+
+
 .outline-h1,
 .outline-h2,
 .outline-h3,
@@ -18,11 +31,11 @@
   margin-left: 0.3rem;
 }
 .outline-container ul {
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .outline-container li {
-  padding: 0;
-  font-size: 75%;
+    padding: 0;
+    font-size: 75%;
 }

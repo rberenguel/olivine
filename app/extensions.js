@@ -1,5 +1,6 @@
 // Now a list of directories
 export default [
+    "../app/extensions/calendar",
   "../app/extensions/wikilinks",
   "../app/extensions/status-bar",
   "../app/extensions/outline",

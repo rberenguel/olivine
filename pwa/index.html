@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="../styles/codemirror.css" />
     <link rel="stylesheet" href="../fonts/iconoir/iconoir.css" />
     <link rel="stylesheet" href="../fonts/monoid.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/build/vanilla-calendar.min.css"
+      rel="stylesheet"
+    />
     <link rel="icon" href="../media/favicon.ico" type="image/x-icon" />
     <link rel="manifest" href="manifest.json" />
     <!--INJECT_OLIVINE_MODE-->
@@ -28,24 +32,30 @@
   <body>
     <div id="app-container">
       <div id="content-wrapper">
-        <aside id="sidebar">
+        <aside id="left-sidebar">
           <header id="sidebar-header">
             <button id="open-vault-btn">Open Vault</button>
           </header>
           <nav>
             <ul id="notes-list"></ul>
           </nav>
-          <div class="gutter gutter-row" id="sidebar-gutter"></div>
+          <div class="gutter gutter-row" id="left-sidebar-gutter"></div>
           <div id="sidebar-panel-container"></div>
         </aside>
         <div class="gutter gutter-col" id="main-gutter"></div>
         <main id="main-content">
           <div id="panes-container"></div>
         </main>
+        <div class="gutter gutter-col" id="right-gutter"></div>
+        <aside id="right-sidebar" class="sidebar">
+          <div id="right-sidebar-panel-container" class="sidebar-panel-container">
+            </div>
+        </aside>
       </div>
 
       <footer id="statusbar-container"></footer>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/build/vanilla-calendar.min.js"></script>
     <script src="../lib/split-grid.js"></script>
     <script src="../lib/metap/metap.js"></script>
     <script src="pwa-bridge.js"></script>

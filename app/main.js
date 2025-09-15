@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     ],
   });
   // ---------------------------------------------
-  initializeSidebar();
+  initializeSidebar(app);
   initializeCommands(app);
 
   await loadExtensions(app);

@@ -1,12 +1,19 @@
 /* styles/sidebar.css */
 
-#sidebar {
+.sidebar {
   background-color: var(--background-color);
   border-right: 1px solid var(--border-color);
   display: grid;
   color: var(--text-color);
-  /* ADD THIS LINE to constrain the grid rows */
   overflow: hidden;
+}
+
+#left-sidebar {
+  border-right: 1px solid var(--border-color);
+}
+
+#right-sidebar {
+    border-left: 1px solid var(--border-color);
 }
 
 /* Hide/show transition */
@@ -24,16 +31,16 @@
   /* flex-shrink: 0; is no longer needed */
 }
 
-/* We no longer need flex-grow, as Grid handles the sizing */
-#sidebar nav,
-#sidebar-panel-container {
+/* Generalize selector */
+.sidebar nav,
+.sidebar-panel-container {
   overflow-y: auto;
   min-height: 0; /* Prevents content overflow issues */
 }
 
 #notes-list {
   list-style: none;
-  padding: 0 3px; /* Add some padding */
+  padding: 0 3px;
   margin: 0;
   font-size: 75%;
 }
@@ -53,10 +60,17 @@
 #notes-list li.active {
   background-color: var(--accent-bg);
 }
-#sidebar-panel-container {
+
+/* Generalize selector */
+.sidebar-panel-container {
   padding: 0.5rem;
-  border-top: 1px solid var(--border-color);
 }
+
+#left-sidebar-panel-container {
+    border-top: 1px solid var(--border-color);
+}
+
+
 /* File Tree Styles */
 #notes-list ul {
   padding-left: 1rem;
