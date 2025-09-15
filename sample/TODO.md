@@ -3,6 +3,7 @@
 - [x] No right side sidebar
 - [ ] There could be a problem with renaming files that have spaces
 - [x] Create a sample test vault with stuff here
+- [ ] Offer an API for buttons in the header
 - [ ] Clean and remove the VS Code extension parts
 - [ ] The backend is not looking for new files… https://github.com/fsnotify/fsnotify
 - [ ] Better rendering for code blocks

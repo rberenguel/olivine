@@ -10,4 +10,5 @@ export default [
   "../app/extensions/tasks",
   "../app/extensions/callouts",
   "../app/extensions/snipper",
+  "../app/extensions/privacy",
 ];

@@ -37,58 +37,58 @@ window.idbStore = idbStore;
 window.idbStore.getDb();
 
 const log = {
-        // Color configuration for different log levels
-        _colors: {
-          info: '#00c',   // Blue
-          warn: '#c60',   // Amber
-          error: '#c00'   // Red
-        },
+  // Color configuration for different log levels
+  _colors: {
+    info: "#00c", // Blue
+    warn: "#c60", // Amber
+    error: "#c00", // Red
+  },
 
-        /**
-         * The core logging function.
-         * @param {string} level - The log level ('info', 'warn', 'error').
-         * @param {string} system - The name of the system/module logging the message.
-         * @param {*} message - The message or object to log.
-         */
-        _log: function(level, system, message) {
-          const color = this._colors[level] || '#6B7280'; // Default to gray
-          const systemStyle = `
+  /**
+   * The core logging function.
+   * @param {string} level - The log level ('info', 'warn', 'error').
+   * @param {string} system - The name of the system/module logging the message.
+   * @param {*} message - The message or object to log.
+   */
+  _log: function (level, system, message) {
+    const color = this._colors[level] || "#6B7280"; // Default to gray
+    const systemStyle = `
             color: #ccc; 
             background-color: ${color}; 
             padding: 2px 6px; 
             border-radius: 4px; 
             font-weight: bold;
           `;
-          console.log(`%c${system}`, systemStyle, message);
-        },
+    console.log(`%c${system}`, systemStyle, message);
+  },
 
-        /**
-         * Logs an informational message.
-         * @param {string} system - The system name.
-         * @param {*} message - The message.
-         */
-        info: function(system, message) {
-          this._log('info', system, message);
-        },
+  /**
+   * Logs an informational message.
+   * @param {string} system - The system name.
+   * @param {*} message - The message.
+   */
+  info: function (system, message) {
+    this._log("info", system, message);
+  },
 
-        /**
-         * Logs a warning message.
-         * @param {string} system - The system name.
-         * @param {*} message - The message.
-         */
-        warn: function(system, message) {
-          this._log('warn', system, message);
-        },
+  /**
+   * Logs a warning message.
+   * @param {string} system - The system name.
+   * @param {*} message - The message.
+   */
+  warn: function (system, message) {
+    this._log("warn", system, message);
+  },
 
-        /**
-         * Logs an error message.
-         * @param {string} system - The system name.
-         * @param {*} message - The message.
-         */
-        error: function(system, message) {
-          this._log('error', system, message);
-        }
-      };
+  /**
+   * Logs an error message.
+   * @param {string} system - The system name.
+   * @param {*} message - The message.
+   */
+  error: function (system, message) {
+    this._log("error", system, message);
+  },
+};
 
 if (window.__OLIVINE_MODE__ !== "remote") {
   let directoryHandle;

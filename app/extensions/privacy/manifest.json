@@ -1,0 +1,5 @@
+{
+  "name": "Privacy",
+  "main": "./main.js",
+  "style": "./style.css"
+}

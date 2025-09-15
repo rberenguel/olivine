@@ -56,7 +56,7 @@ export function activate(app) {
             openFile(filePath, state.activePane);
           } else {
             // Create a new file if it doesn't exist
-            app.workspace.createNewFile(filePath, /*params=*/{open: true});
+            app.workspace.createNewFile(filePath, /*params=*/ { open: true });
           }
         }
       },

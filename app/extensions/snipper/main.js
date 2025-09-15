@@ -60,12 +60,15 @@ class SnippetWidget extends WidgetType {
     } catch (e) {
       log.warn("snipper", e);
       try {
-        log.info("snipper", "Creating snippet file")
+        log.info("snipper", "Creating snippet file");
         await window.app.workspace.createNewFile(snippetPath);
         container.textContent = "Empty snippet. Click to edit.";
       } catch (folderError) {
         const folder = SNIPPER_SETTINGS.snippetFolderPath;
-        log.info("snipper", `Assuming folder '${folder}' exists or will be created.`);
+        log.info(
+          "snipper",
+          `Assuming folder '${folder}' exists or will be created.`,
+        );
         await window.app.workspace.createNewFile(snippetPath);
         container.textContent = "Empty snippet. Click to edit.";
       }

@@ -1,0 +1,27 @@
+#privacy-blur-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+
+  /* The blur effect */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* For Safari */
+
+  /* A slight dark tint */
+  background-color: rgba(20, 20, 20, 0.1);
+
+  /* Start hidden and transition smoothly */
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease-in-out,
+    visibility 0.2s ease-in-out;
+}
+
+#privacy-blur-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+}
