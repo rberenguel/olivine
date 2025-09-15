@@ -116,6 +116,7 @@
     var(--background-primary-alt)
   );
   margin-bottom: 1rem;
+  margin-top: 1rem;
   font-family: var(--font-monospace);
 }
 
@@ -130,9 +131,9 @@
 
 .cm-frontmatter-key {
   font-weight: bold;
-  color: var(--gray-d-50);
+  color: var(--color-d-gray-50);
 }
 
 .cm-frontmatter-value {
-  color: var(--gray-d-60);
+  color: var(--color-d-gray-60);
 }
