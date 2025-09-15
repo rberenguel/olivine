@@ -23,14 +23,24 @@ var (
 	vaultPath string
 	pwaPath   string
 	port      int
+	useHTTPS  bool
 )
 
 func main() {
 	// 1. Argument Parsing
 	flag.StringVar(&vaultPath, "vault", "", "Path to the Obsidian vault")
 	flag.StringVar(&pwaPath, "pwa", ".", "Path to the PWA root")
-	flag.IntVar(&port, "port", 8443, "Port to serve on")
+	flag.BoolVar(&useHTTPS, "https", false, "Serve using HTTPS")
+	flag.IntVar(&port, "port", 0, "Port to serve on (default 8080 for HTTP, 8443 for HTTPS)")
 	flag.Parse()
+
+	if port == 0 {
+		if useHTTPS {
+			port = 8443
+		} else {
+			port = 8080
+		}
+	}
 
 	if vaultPath == "" {
 		log.Fatal("Vault path is required. Please use the -vault flag.")
@@ -52,29 +62,18 @@ func main() {
 	log.Printf("Vault Path: %s", vaultPath)
 	log.Printf("PWA Path:   %s", pwaPath)
 	log.Printf("Port:       %d", port)
+	log.Printf("HTTPS:      %t", useHTTPS)
 
-	// 2. Certificate Generation
-	certFile := "cert.pem"
-	keyFile := "key.pem"
-	if _, err := os.Stat(certFile); os.IsNotExist(err) {
-		log.Println("Generating cert.pem and key.pem...")
-		generateCert(certFile, keyFile)
-	}
-
-	// 3. API Handlers
+	// API Handlers
 	http.HandleFunc("/api/files", handleListFiles)
 	http.HandleFunc("/api/files/read", handleReadFile)
 	http.HandleFunc("/api/files/write", handleWriteFile)
 	http.HandleFunc("/api/files/create", handleCreateFile)
 	http.HandleFunc("/api/files/rename", handleRenameFile)
 
-	// 4. Custom File Server with Middleware for index.html injection
-	// The file server is rooted at pwaPath (e.g., the project root ".")
+	// Custom File Server with Middleware for index.html injection
 	fileServer := http.FileServer(http.Dir(pwaPath))
 	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Diagnostic logging to see every request path.
-		// log.Printf("Request received for: %s", r.URL.Path)
-
 		// The user accesses the PWA via the /pwa/ directory. We must match this path.
 		if r.URL.Path == "/pwa/" || r.URL.Path == "/pwa/index.html" {
 			// The file on disk is located at "pwa/index.html" relative to the pwaPath.
@@ -82,16 +81,29 @@ func main() {
 			return
 		}
 		// For all other files, let the file server handle it.
-		// A request for /pwa/main.js will be correctly found by the file server
-		// at the path ./pwa/main.js on the filesystem.
 		fileServer.ServeHTTP(w, r)
 	}))
 
-	// 5. Start Server
+	// Start Server
 	addr := fmt.Sprintf(":%d", port)
-	log.Printf("Serving PWA from '%s' on https://localhost%s/pwa", pwaPath, addr)
-	log.Printf("API is available at https://localhost%s/api", addr)
-	err = http.ListenAndServeTLS(addr, certFile, keyFile, nil)
+
+	if useHTTPS {
+		// Certificate Generation
+		certFile := "cert.pem"
+		keyFile := "key.pem"
+		if _, err := os.Stat(certFile); os.IsNotExist(err) {
+			log.Println("Generating cert.pem and key.pem...")
+			generateCert(certFile, keyFile)
+		}
+		log.Printf("Serving PWA from '%s' on https://localhost%s/pwa", pwaPath, addr)
+		log.Printf("API is available at https://localhost%s/api", addr)
+		err = http.ListenAndServeTLS(addr, certFile, keyFile, nil)
+	} else {
+		log.Printf("Serving PWA from '%s' on http://localhost%s/pwa", pwaPath, addr)
+		log.Printf("API is available at http://localhost%s/api", addr)
+		err = http.ListenAndServe(addr, nil)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
