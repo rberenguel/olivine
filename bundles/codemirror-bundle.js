@@ -1,4 +1,4 @@
-import { EditorState, EditorSelection, StateField } from "@codemirror/state";
+import { EditorState, EditorSelection, StateField, RangeSetBuilder } from "@codemirror/state";
 import {
   EditorView,
   keymap,
@@ -15,6 +15,7 @@ import { syntaxTree } from "@codemirror/language";
 import { GFM } from "@lezer/markdown"; // <-- The correct import
 
 export {
+  RangeSetBuilder,
   StateField,
   EditorSelection,
   EditorState,

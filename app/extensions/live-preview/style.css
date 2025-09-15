@@ -59,3 +59,38 @@
   border-top: 2px solid var(--color-d-gray-80);
   margin: 0;
 }
+
+/* Frontmatter */
+
+.cm-frontmatter {
+  font-size: 70%;
+  padding: 1rem;
+  padding-left: 2rem;
+  border: 1px solid var(--color-d-gray-80);
+  border-radius: 0.5em;
+  background-color: color-mix(
+    in srgb,
+    var(--background-color) 50%,
+    var(--background-primary-alt)
+  );
+  margin-bottom: 1rem;
+  font-family: var(--font-monospace);
+}
+
+.cm-frontmatter-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cm-frontmatter-property {
+}
+
+.cm-frontmatter-key {
+  font-weight: bold;
+  color: var(--gray-d-50);
+}
+
+.cm-frontmatter-value {
+  color: var(--gray-d-60);
+}

@@ -34,3 +34,8 @@
   overflow-y: auto;
   position: relative;
 }
+
+.cm-scroller {
+    width: 50rem;
+    margin: auto;
+}

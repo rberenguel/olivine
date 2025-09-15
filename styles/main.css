@@ -82,6 +82,8 @@
   --callout-icon-warning: iconoir-warning-triangle;
   --callout-icon-danger: iconoir-warning-triangle;
   --callout-icon-info: iconoir-info-circle;
+
+  --font-monospace: "monoidregular";
 }
 #metap-modal {
   font-size: 0.8rem;

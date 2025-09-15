@@ -91,6 +91,7 @@ export function createEditor(parent, doc = "") {
   const editorState = EditorState.create({
     doc,
     extensions: [
+      EditorView.lineWrapping,
       markdown({ base: markdownLanguage, extensions: GFM }),
       oneDark,
       EditorView.lineWrapping,

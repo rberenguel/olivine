@@ -44,7 +44,7 @@ async function getApi() {
     return api;
   }
 
-  const mode = window.__SILEX_MODE__ || "local";
+  const mode = window.__OLIVINE_MODE__ || "local";
 
   if (mode === "remote") {
     // The remote bridge is loaded into the window object by main.js

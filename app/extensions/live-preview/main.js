@@ -3,7 +3,12 @@ import {
   Decoration,
   syntaxTree,
   WidgetType,
+  StateField,
+  EditorView,
+  RangeSetBuilder, // Now correctly imported from your bundle
 } from "CodeMirrorBundle";
+
+// --- START: Original Live Preview Code ---
 
 class HrWidget extends WidgetType {
   toDOM() {
@@ -11,7 +16,6 @@ class HrWidget extends WidgetType {
     hr.className = "cm-hr";
     return hr;
   }
-  // This widget doesn't need to handle any events
   ignoreEvent() {
     return true;
   }
@@ -34,11 +38,9 @@ const livePreviewPlugin = ViewPlugin.fromClass(
       const tagRegex = /#([a-zA-Z0-9_/-]+)/g;
       const selection = view.state.selection.main;
 
-      // We iterate over the visible parts of the document for performance.
       for (let { from, to } of view.visibleRanges) {
         const text = view.state.doc.sliceString(from, to);
 
-        // Find tags with a Regex
         let match;
         while ((match = tagRegex.exec(text))) {
           const start = from + match.index;
@@ -48,10 +50,9 @@ const livePreviewPlugin = ViewPlugin.fromClass(
           );
         }
 
-        // Find other markdown elements with the syntax tree
         syntaxTree(view.state).iterate({
           from,
-          to, // Only iterate within the visible range
+          to,
           enter: (node) => {
             const { type, from, to } = node;
             switch (type.name) {
@@ -59,18 +60,16 @@ const livePreviewPlugin = ViewPlugin.fromClass(
               case "QuoteMark":
               case "ListMark":
                 decorations.push(
-                  Decoration.mark({ class: "list-bullet" }).range(from, to), // Useless for now
+                  Decoration.mark({ class: "list-bullet" }).range(from, to),
                 );
                 break;
               case "EmphasisMark":
-              case "StrongEmphasisMark": // For ** and __
-              case "CodeMark": // For ` and ```
+              case "StrongEmphasisMark":
+              case "CodeMark":
                 decorations.push(
                   Decoration.mark({ class: "cm-formatting" }).range(from, to),
                 );
                 break;
-
-              // Block-level styling
               case "ATXHeading1":
                 decorations.push(
                   Decoration.line({ class: "cm-header-1" }).range(from),
@@ -112,7 +111,6 @@ const livePreviewPlugin = ViewPlugin.fromClass(
                 );
                 break;
               case "HorizontalRule":
-                console.log(selection.from, selection.to, from, to);
                 const cursorOnLine =
                   selection.from >= from && selection.to <= to;
                 if (cursorOnLine) break;
@@ -133,13 +131,113 @@ const livePreviewPlugin = ViewPlugin.fromClass(
     decorations: (v) => v.decorations,
   },
 );
+// --- END: Original Live Preview Code ---
 
+// --- START: New Frontmatter Rendering Code ---
+
+class FrontmatterWidget extends WidgetType {
+  constructor(content) {
+    super();
+    this.content = content;
+  }
+
+  toDOM() {
+    const container = document.createElement("div");
+    container.className = "cm-frontmatter";
+
+    const lines = this.content.split("\n").filter((line) => line.trim() !== "");
+
+    const list = document.createElement("ul");
+    list.className = "cm-frontmatter-list";
+
+    for (const line of lines) {
+      const parts = line.split(":");
+      const key = parts[0]?.trim();
+      const value = parts
+        .slice(1)
+        .join(":")
+        .trim()
+        .replace(/^"|"$/g, "")
+        .replace(/^'|'$/g, "");
+
+      if (!key) continue;
+
+      const listItem = document.createElement("li");
+      listItem.className = "cm-frontmatter-property";
+
+      const keyEl = document.createElement("span");
+      keyEl.className = "cm-frontmatter-key";
+      keyEl.textContent = `${key}: `;
+
+      const valueEl = document.createElement("span");
+      valueEl.className = "cm-frontmatter-value";
+      valueEl.textContent = value;
+
+      listItem.appendChild(keyEl);
+      listItem.appendChild(valueEl);
+      list.appendChild(listItem);
+    }
+
+    container.appendChild(list);
+    return container;
+  }
+}
+
+const frontmatterField = StateField.define({
+  create(state) {
+    return Decoration.none;
+  },
+  update(value, tr) {
+    const builder = new RangeSetBuilder();
+    const doc = tr.state.doc;
+    const firstLine = doc.line(1);
+
+    if (doc.lines < 2 || firstLine.text.trim() !== "---") {
+      return Decoration.none;
+    }
+
+    let endLineNum = -1;
+    let content = [];
+    for (let i = 2; i <= doc.lines; i++) {
+      const line = doc.line(i);
+      if (line.text.trim() === "---") {
+        endLineNum = i;
+        break;
+      }
+      content.push(line.text);
+    }
+
+    if (endLineNum !== -1) {
+      const from = firstLine.from;
+      const to = doc.line(endLineNum).to;
+      const selection = tr.state.selection.main;
+      const cursorOnFrontmatter = selection.from >= from && selection.to <= to;
+
+      if (!cursorOnFrontmatter) {
+        builder.add(
+          from,
+          to,
+          Decoration.replace({
+            widget: new FrontmatterWidget(content.join("\n")),
+            block: true,
+          }),
+        );
+      }
+    }
+
+    return builder.finish();
+  },
+  provide: (f) => EditorView.decorations.from(f),
+});
+
+// --- END: New Frontmatter Rendering Code ---
+
+// --- START: Combined Activation ---
 export function activate(app) {
-  // We need to figure out a way to register this.
-  // We can add it to the app object, and then collect all registered
-  // extensions when we create a new pane
   if (!app.state.cmExtensions) {
     app.state.cmExtensions = [];
   }
-  app.state.cmExtensions.push(livePreviewPlugin);
+  // Add both the original plugin and the new state field
+  app.state.cmExtensions.push(livePreviewPlugin, frontmatterField);
 }
+// --- END: Combined Activation ---
