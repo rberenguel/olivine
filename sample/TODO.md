@@ -1,0 +1,14 @@
+- [x] Tags should be better visible
+- [x] The sidebar behaves weirdly when the outline is very large
+- [x] No right side sidebar
+- [ ] There could be a problem with renaming files that have spaces
+- [x] Create a sample test vault with stuff here
+- [ ] Clean and remove the VS Code extension parts
+- [ ] The backend is not looking for new files… https://github.com/fsnotify/fsnotify
+- [ ] Better rendering for code blocks
+- [ ] Clean up the code related to VS Code
+- [ ] Worth having the Chrome extension mode?
+- [ ] Event based reindexing
+- [ ] Store and load created indexes (needs a reindex command then)
+- [ ] **LOW** There seems to be something partially broken in clicking on lines that contain external links (the cursor is not placed correctly)
+- [ ] **LOW** Can't move files

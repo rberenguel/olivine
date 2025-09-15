@@ -10,7 +10,7 @@ function formatDate(date) {
 }
 
 export function activate(app) {
-  console.log("Activating Calendar Extension");
+  log.info("calendar", "Activating Extension");
 
   const calendarContainer = document.createElement("div");
   calendarContainer.id = "calendar-container";
@@ -47,9 +47,7 @@ export function activate(app) {
       clickDay(e, dates) {
         if (dates.selectedDates) {
           const clickedDate = new Date(dates.selectedDates);
-          console.log(clickedDate);
           const dateString = formatDate(clickedDate);
-          console.log(dateString);
           const filePath = `journal/${dateString}.md`;
 
           const fileExists = app.state.allFilePaths.some((f) => f === filePath);
@@ -58,7 +56,7 @@ export function activate(app) {
             openFile(filePath, state.activePane);
           } else {
             // Create a new file if it doesn't exist
-            app.workspace.createNewFile(filePath, `# ${dateString}\n\n`);
+            app.workspace.createNewFile(filePath, /*params=*/{open: true});
           }
         }
       },

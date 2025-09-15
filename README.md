@@ -10,6 +10,8 @@ Also offers search (through Minisearch, title only for now) and a couple command
 Rendering and styles are still a bit so-so. So far can only be considered a proof of concept. Hopefully I never need
 to add any more features.
 
+You can find a TODO list of what I'm finding in `sample/TODO.md`.
+
 ## With backend
 
 ```

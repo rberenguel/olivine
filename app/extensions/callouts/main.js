@@ -153,6 +153,7 @@ const calloutStateField = StateField.define({
 });
 
 export function activate(app) {
+  log.info("callouts", "Activating Extension");
   if (!app.state.cmExtensions) {
     app.state.cmExtensions = [];
   }

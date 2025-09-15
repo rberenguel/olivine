@@ -1,7 +1,7 @@
 // app/extensions/graph-view/main.js
 
 export function activate(app) {
-  console.log("Activating Graph View Extension");
+  log.info("graph-view", "Activating Extension");
 
   app.ui.registerViewType("graph", {
     title: "Graph",

@@ -32,6 +32,7 @@ const taskClickHandler = EditorView.domEventHandlers({
 });
 
 export function activate(app) {
+  log.info("tasks", "Activating Extension");
   if (!app.state.cmExtensions) {
     app.state.cmExtensions = [];
   }

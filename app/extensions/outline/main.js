@@ -40,7 +40,7 @@ function updateOutline(pane, listElement, panelContainer) {
 }
 
 export function activate(app) {
-  console.log("Activating Outline Extension");
+  log.info("outline", "Activating Extension");
   // 1. Create the UI for the panel
   const panelContainer = document.createElement("div");
   panelContainer.classList.add("outline-container");

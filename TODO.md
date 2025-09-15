@@ -1,4 +1,0 @@
-- [ ] Tags should be better visible
-- [ ] The sidebar behaves weirdly when the outline is very large
-- [ ] No right side sidebar
-- [ ] LOW Can't move files

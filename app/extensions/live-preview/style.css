@@ -48,7 +48,18 @@
   font-style: italic;
   color: #999;
   padding-left: 1em;
-  border-left: 3px solid var(--pico-primary);
+  border-left: 3px solid var(--color-d-gray-80);
+  padding: 1.5em 2em; /* Adjusted padding */
+  /* Using a semi-transparent background to let the backdrop filter shine through */
+  margin-top: 0.5rem;
+  background-color: var(--color-d-gray-80);
+  backdrop-filter: blur(6px) brightness(90%);
+  border-left: 3px solid var(--color-d-gray-60);
+  border-radius: 8px; /* Less rounded */
+  color: var(--text-color);
+  font-style: italic;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
 }
 
 /* This is the key part: hide the syntax markers by default */
@@ -135,5 +146,16 @@
 }
 
 .cm-frontmatter-value {
-  color: var(--color-d-gray-60);
+  color: var(--color-d-purple-20);
+}
+
+.list-mark .ͼj {
+  font-size: 0;
+}
+
+/* This makes bullets look nice without needing a widget decorator */
+.list-mark .ͼj::before {
+  content: "∙";
+  font-size: 0.5rem;
+  margin-right: -0.2rem;
 }

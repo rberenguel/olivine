@@ -58,13 +58,14 @@ class SnippetWidget extends WidgetType {
         container.textContent = "Error reading snippet file.";
       }
     } catch (e) {
-      console.warn(e);
+      log.warn("snipper", e);
       try {
+        log.info("snipper", "Creating snippet file")
         await window.app.workspace.createNewFile(snippetPath);
         container.textContent = "Empty snippet. Click to edit.";
       } catch (folderError) {
         const folder = SNIPPER_SETTINGS.snippetFolderPath;
-        console.log(`Assuming folder '${folder}' exists or will be created.`);
+        log.info("snipper", `Assuming folder '${folder}' exists or will be created.`);
         await window.app.workspace.createNewFile(snippetPath);
         container.textContent = "Empty snippet. Click to edit.";
       }
@@ -131,7 +132,6 @@ let directClick = false;
 
 // This function is now standalone to avoid `this` context issues.
 function buildDecorations(state) {
-  console.log(state);
   const decorations = [];
   const selection = state.selection.main;
 
@@ -171,11 +171,9 @@ function buildDecorations(state) {
 // This StateField finds ` ```snippet ` blocks and replaces them.
 const snippetPlugin = StateField.define({
   create(state) {
-    console.log("Snippet created");
     return buildDecorations(state);
   },
   update(decorations, transaction) {
-    console.log(transaction);
     if (!transaction.docChanged) return decorations;
     return buildDecorations(transaction.state);
   },
@@ -186,6 +184,7 @@ const snippetPlugin = StateField.define({
 
 // Activate the plugin and register the "Insert Snipper block" command.
 export function activate(app) {
+  log.info("snipper", "Activating Extension");
   if (!app.state.cmExtensions) {
     app.state.cmExtensions = [];
   }

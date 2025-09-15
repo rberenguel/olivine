@@ -242,6 +242,7 @@ const frontmatterField = StateField.define({
 
 // --- START: Combined Activation ---
 export function activate(app) {
+  log.info("live-preview", "Activating Extension");
   if (!app.state.cmExtensions) {
     app.state.cmExtensions = [];
   }

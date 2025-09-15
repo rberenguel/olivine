@@ -68,7 +68,8 @@ export async function loadAndIndexNotes(files) {
   window.app.commands.refreshPalette();
 }
 
-export async function createNewFile() {
+export async function createNewFile(filename, params={}) {
+  console.log(params)
   const untitledRegex = /^(?:.*\/)?Untitled (\d+)\.md$/;
   const existingNumbers = state.allFilePaths
     .map((path) => {
@@ -82,12 +83,14 @@ export async function createNewFile() {
     nextNum++;
   }
 
-  const newFilename = `Untitled ${nextNum}.md`;
+  const newFilename = filename || `Untitled ${nextNum}.md`;
 
   try {
     await vscode.createNewFile(newFilename);
     await initializeFileHandling();
-    await openFile(newFilename, state.activePane);
+    if(params.open){
+      await openFile(newFilename, state.activePane);
+    }
   } catch (error) {
     console.error("Error creating new file:", error);
   }

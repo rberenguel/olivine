@@ -94,7 +94,7 @@ export function createApp() {
             container = document.getElementById("sidebar-panel-container");
             break;
           default:
-            console.error(`Unknown view location: ${location}`);
+            log.error("app-core", `Unknown view location: ${location}`);
             return;
         }
         if (container) {
@@ -107,7 +107,6 @@ export function createApp() {
           title: `New ${config.title || name} View`,
           lambda: () => app.ui.createCustomPane(name),
         };
-        console.log(command);
         // 4. Use the new, safe registration method
         app.commands.register("static", command);
         app.commands.refreshPalette(); // Refresh the palette to show the new command
@@ -121,7 +120,7 @@ export function createApp() {
       registerCmExtension(extension) {
         // This is a placeholder for the logic that would add the extension
         // to all new and existing editor panes.
-        console.log("Registering CM extension:", extension);
+        log.info("app-core", "Registering CM extension:", extension);
       },
     },
   };
@@ -132,6 +131,13 @@ export function createApp() {
     await window.idbStore.set("olivine-last-open-file", filename);
     await originalOpenFile(filename, pane);
     app.events.emit("file:opened", { filename, pane });
+  };
+
+  // When a file is created, emit an event
+  const originalCreateFile = app.workspace.createNewFile;
+  app.workspace.createNewFile = async (filename, params) => {
+    await originalCreateFile(filename, params);
+    app.events.emit("file:created", { filename, opening });
   };
 
   const originalInit = app.workspace.initializeFileHandling;

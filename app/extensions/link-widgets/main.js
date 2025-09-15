@@ -107,6 +107,7 @@ const linkWidgetClickHandler = EditorView.domEventHandlers({
 
 // 3. Activate the extension
 export function activate(app) {
+  log.info("link-widget", "Activating Extension");
   if (!app.state.cmExtensions) {
     app.state.cmExtensions = [];
   }

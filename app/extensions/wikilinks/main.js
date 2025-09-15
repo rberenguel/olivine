@@ -59,6 +59,7 @@ const wikilinkCompletion = autocompletion({
 // --- Activation ---
 
 export function activate(app) {
+  log.info("wikilinks", "Activating Extension");
   if (!app.state.cmExtensions) {
     app.state.cmExtensions = [];
   }

@@ -1,7 +1,7 @@
 // app/extensions/status-bar/main.js
 
 export function activate(app) {
-  console.log("Activating Status Bar Extension");
+  log.info("status-bar", "Activating Extension");
 
   // 1. Create the UI element for the status bar
   const statusBarItem = document.createElement("div");

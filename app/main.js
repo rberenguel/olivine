@@ -6,14 +6,14 @@ async function loadBridge() {
       // Dynamically import the remote bridge module.
       // Its functions will be available for the new vscode-api.js to use.
       window.remoteBridge = await import("./remote-bridge.js");
-      console.log("Loaded remote bridge.");
+      log.info("app-main", "Loaded remote bridge.");
       document.getElementById("open-vault-btn").style.display = "none";
     } catch (e) {
-      console.error("Failed to load remote bridge:", e);
+      log.error("app-main", "Failed to load remote bridge:", e);
       document.body.innerHTML = `<h1>Error</h1><p>Could not load the remote file bridge.</p>`;
     }
   } else {
-    console.log("Using local bridge (statically loaded).");
+    log.info("app-main", "Using local bridge (statically loaded).");
   }
 }
 
@@ -28,7 +28,6 @@ async function loadExtensions(app) {
       // 1. Fetch the manifest for the extension
       const manifestResponse = await fetch(`${path}/manifest.json`);
       const manifest = await manifestResponse.json();
-      console.log(manifest);
       // 2. Check for a stylesheet and inject it if it exists
       if (manifest.style) {
         const link = document.createElement("link");
@@ -45,7 +44,7 @@ async function loadExtensions(app) {
         }
       }
     } catch (e) {
-      console.error(`Failed to load extension from ${path}:`, e);
+      log.error("app-main", `Failed to load extension from ${path}:`, e);
     }
   }
 }
