@@ -1,4 +1,9 @@
-import { EditorState, EditorSelection, StateField, RangeSetBuilder } from "@codemirror/state";
+import {
+  EditorState,
+  EditorSelection,
+  StateField,
+  RangeSetBuilder,
+} from "@codemirror/state";
 import {
   EditorView,
   keymap,

@@ -41,17 +41,31 @@ export function createApp() {
       },
       // 3. A single function to update the palette UI
       refreshPalette: () => {
+        // Define an async search function for the palette
+        const fileSearcher = async (query) => {
+          if (!query) return [];
+
+          const searchResults = app.state.fileSearchIndex.search(query, {
+            fields: ["name", "text"],
+            boost: { name: 2, text: 1 }, // Prioritize title matches
+          });
+
+          return searchResults.map((result) => ({
+            title: result.name.split("/").pop(),
+            lambda: () =>
+              app.workspace.openFile(result.id, app.state.activePane),
+          }));
+        };
         const fileCommands = app.state.allFilePaths.map((path) => ({
           title: path.replace(".md", "").split("/").pop(),
           lambda: () => app.workspace.openFile(path, app.state.activePane),
         }));
         app.commands.lists.file = fileCommands;
-        console.log(app.commands.lists.static);
-        console.log(app.commands.lists.file);
+        // Bind the static commands and our new dynamic file searcher
         metaP.bind(
           {
-            command: app.commands.lists.static,
-            file: app.commands.lists.file,
+            shifted: app.commands.lists.static,
+            default: fileSearcher,
           },
           { maxCommands: 10, blur: 1 },
         );

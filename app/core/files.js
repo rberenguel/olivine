@@ -37,7 +37,6 @@ function buildFileTree(files) {
 export async function loadAndIndexNotes(files) {
   if (!files) return;
 
-  // Filter out hidden files and files in hidden directories.
   const filteredFiles = files.filter(
     (path) => !path.split("/").some((part) => part.startsWith(".")),
   );
@@ -45,14 +44,23 @@ export async function loadAndIndexNotes(files) {
   const fileTree = buildFileTree(filteredFiles);
   loadSidebarList(fileTree);
 
-  const documents = filteredFiles.map((path) => ({
-    id: path,
-    name: path.replace(".md", ""),
-  }));
-  state.allFilePaths = documents.map((doc) => doc.id);
+  const mdFiles = filteredFiles.filter((path) => path.endsWith(".md"));
+
+  // Process files sequentially to avoid resource exhaustion
+  const documents = [];
+  for (const path of mdFiles) {
+    const content = await vscode.readFile(path);
+    documents.push({
+      id: path,
+      name: path.replace(".md", ""),
+      text: content,
+    });
+  }
+
+  state.allFilePaths = filteredFiles;
 
   state.fileSearchIndex = new MiniSearch({
-    fields: ["name"],
+    fields: ["name", "text"],
     storeFields: ["name"],
   });
   state.fileSearchIndex.addAll(documents);

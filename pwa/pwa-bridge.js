@@ -119,7 +119,7 @@ if (window.__OLIVINE_MODE__ !== "remote") {
           requestId: initialFilesRequest.requestId,
           payload: files,
         },
-      })
+      }),
     );
     initialFilesRequest = null;
   }
@@ -148,14 +148,14 @@ if (window.__OLIVINE_MODE__ !== "remote") {
       window.dispatchEvent(
         new MessageEvent("message", {
           data: { requestId: requestId, payload: content },
-        })
+        }),
       );
     } catch (e) {
       console.error("Error reading file:", e);
       window.dispatchEvent(
         new MessageEvent("message", {
           data: { requestId: requestId, error: e.message },
-        })
+        }),
       );
     }
   }
