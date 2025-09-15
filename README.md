@@ -2,8 +2,11 @@
 
 > Olivine is an olive-green mineral ocurring in igneous (volcanic) rocks. Easy to find in La Garrotxa (Catalonia)
 
-This is a ~~Chrome extension~~ VS Code extension (and progressive web app) that can be pointed at an Obsidian vault and more or less read the files and edit them.
+This is a ~~Chrome extension~~ ~~VS Code extension~~ progressive web app that can be pointed at an Obsidian vault and more or less read the files and edit them.
 Also offers search (through Minisearch, title only for now) and a couple commands.
+
+
+<img src="sample/olivine.png"/>
 
 ---
 
