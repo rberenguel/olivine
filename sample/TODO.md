@@ -7,6 +7,7 @@
 - [ ] Clean and remove the VS Code extension parts
 - [ ] The backend is not looking for new files… https://github.com/fsnotify/fsnotify
 - [ ] Better rendering for code blocks
+- [ ] Commands should have ids and be callable by id
 - [ ] Clean up the code related to VS Code
 - [ ] Worth having the Chrome extension mode?
 - [ ] Event based reindexing
