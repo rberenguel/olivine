@@ -1,7 +1,7 @@
 import { state } from "./state.js";
 import { loadSidebarList } from "../components/sidebar.js";
 import { MiniSearch } from "CodeMirrorBundle";
-import * as vscode from "./vscode-api.js";
+import * as fs from "./fs-provider.js";
 
 function buildFileTree(files) {
   const root = { children: [] };
@@ -49,7 +49,7 @@ export async function loadAndIndexNotes(files) {
   // Process files sequentially to avoid resource exhaustion
   const documents = [];
   for (const path of mdFiles) {
-    const content = await vscode.readFile(path);
+    const content = await fs.readFile(path);
     documents.push({
       id: path,
       name: path.replace(".md", ""),
@@ -86,7 +86,7 @@ export async function createNewFile(filename, params = {}) {
   const newFilename = filename || `Untitled ${nextNum}.md`;
 
   try {
-    await vscode.createNewFile(newFilename);
+    await fs.createNewFile(newFilename);
     await initializeFileHandling();
     if (params.open) {
       await openFile(newFilename, state.activePane);
@@ -106,7 +106,7 @@ export async function renameFile(oldPath, newName) {
   const newPath = [...pathParts, newName].join("/");
 
   try {
-    await vscode.renameFile(oldPath, newPath);
+    await fs.renameFile(oldPath, newPath);
     await initializeFileHandling();
     return newPath;
   } catch (error) {
@@ -117,7 +117,7 @@ export async function renameFile(oldPath, newName) {
 
 export async function saveFile(path, content) {
   try {
-    await vscode.writeFile(path, content);
+    await fs.writeFile(path, content);
   } catch (error) {
     console.error("Error saving file:", error);
   }
@@ -126,7 +126,7 @@ export async function saveFile(path, content) {
 export async function openFile(filename, pane) {
   if (!pane) return;
   try {
-    const content = await vscode.readFile(filename);
+    const content = await fs.readFile(filename);
     pane.filePath = filename;
     if (pane.titleElement) {
       pane.titleElement.textContent = filename.split("/").pop();
@@ -157,9 +157,8 @@ export function findFileByTitle(title) {
   );
 }
 
-export async function initializeFileHandling() {
+export async function initializeFileHandling(files) {
   try {
-    const files = await vscode.getInitialFiles();
     await loadAndIndexNotes(files);
   } catch (e) {
     console.error("Error getting initial files", e);

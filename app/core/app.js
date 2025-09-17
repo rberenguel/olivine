@@ -3,7 +3,7 @@
 import { state, setActivePane } from "./state.js";
 import * as fileApi from "./files.js";
 import * as paneApi from "../components/panes.js";
-import { readFile } from "./vscode-api.js";
+import { readFile } from "./fs-provider.js";
 //import { updatePaletteBindings } from "./commands.js";
 
 // A simple event emitter

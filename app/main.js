@@ -1,26 +1,8 @@
-// --- Dynamic Bridge Loader ---
-async function loadBridge() {
-  const mode = window.__OLIVINE_MODE__ || "local";
-  if (mode === "remote") {
-    try {
-      // Dynamically import the remote bridge module.
-      // Its functions will be available for the new vscode-api.js to use.
-      window.remoteBridge = await import("./remote-bridge.js");
-      log.info("app-main", "Loaded remote bridge.");
-      document.getElementById("open-vault-btn").style.display = "none";
-    } catch (e) {
-      log.error("app-main", "Failed to load remote bridge:", e);
-      document.body.innerHTML = `<h1>Error</h1><p>Could not load the remote file bridge.</p>`;
-    }
-  } else {
-    log.info("app-main", "Using local bridge (statically loaded).");
-  }
-}
-
 import { createApp } from "./core/app.js";
 import { initializeSidebar } from "./components/sidebar.js";
 import extensionDirectories from "./extensions.js";
 import { initializeCommands } from "./core/commands.js";
+import * as fs from "./core/fs-provider.js";
 
 async function loadExtensions(app) {
   for (const path of extensionDirectories) {
@@ -49,10 +31,8 @@ async function loadExtensions(app) {
   }
 }
 
-// The rest of your main.js file remains the same...
 document.addEventListener("DOMContentLoaded", async () => {
-  // Load the correct bridge BEFORE initializing the app
-  await loadBridge();
+  const initialFiles = await fs.initialize();
 
   const app = createApp();
   window.app = app;
@@ -76,5 +56,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await loadExtensions(app);
   app.ui.createInitialPane();
-  await app.workspace.initializeFileHandling();
+  await app.workspace.initializeFileHandling(initialFiles);
 });
