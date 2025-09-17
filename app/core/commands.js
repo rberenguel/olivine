@@ -13,7 +13,14 @@ const staticCommands = [
 
 export function initializeCommands(app) {
   // Register the initial static commands
-  app.commands.register("static", staticCommands);
+  for (let command of staticCommands) {
+    const id = command.title
+      .split(" ")
+      .map((s) => s.toLowerCase())
+      .join("-");
+    app.registerCommand("core:" + id, command);
+  }
+  //app.commands.register("static", staticCommands);
 
   // The palette is now refreshed elsewhere, like after files are loaded
 }

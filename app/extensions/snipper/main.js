@@ -193,7 +193,7 @@ export function activate(app) {
   }
   app.state.cmExtensions.push(snippetPlugin);
 
-  app.commands.register("static", {
+  app.registerCommand("snipper:insert-block", {
     title: "Insert Snipper block",
     lambda: () => {
       const editorView = app.workspace.getActivePane().editorView;
@@ -204,5 +204,5 @@ export function activate(app) {
       });
     },
   });
-  app.commands.refreshPalette();
+  app.refreshPalette();
 }

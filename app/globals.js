@@ -47,8 +47,9 @@ const log = {
    * @param {string} system - The system name.
    * @param {*} message - The message.
    */
-  error: function (system, message) {
+  error: function (system, message, error) {
     this._log("error", system, message);
+    console.log(error);
   },
 };
 

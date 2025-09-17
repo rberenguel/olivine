@@ -24,52 +24,38 @@ export function createApp() {
     viewTypes: new Map(),
     state: state,
     events: new Emitter(),
-    // 1. Centralized command storage
-    commands: {
-      lists: {
-        static: [], // For 'New Note', etc.
-        file: [], // For the file list
-      },
-      // 2. A safe way to register new commands
-      register: (group, command) => {
-        if (!app.commands.lists[group]) {
-          app.commands.lists[group] = [];
-        }
-        // Support registering a single command or an array
-        const commandsToAdd = Array.isArray(command) ? command : [command];
-        app.commands.lists[group].push(...commandsToAdd);
-      },
-      // 3. A single function to update the palette UI
-      refreshPalette: () => {
-        // Define an async search function for the palette
-        const fileSearcher = async (query) => {
-          if (!query) return [];
-
-          const searchResults = app.state.fileSearchIndex.search(query, {
-            fields: ["name", "text"],
-            boost: { name: 2, text: 1 }, // Prioritize title matches
-          });
-
-          return searchResults.map((result) => ({
-            title: result.name.split("/").pop(),
-            lambda: () =>
-              app.workspace.openFile(result.id, app.state.activePane),
-          }));
-        };
-        const fileCommands = app.state.allFilePaths.map((path) => ({
-          title: path.replace(".md", "").split("/").pop(),
-          lambda: () => app.workspace.openFile(path, app.state.activePane),
-        }));
-        app.commands.lists.file = fileCommands;
-        // Bind the static commands and our new dynamic file searcher
-        metaP.bind(
-          {
-            shifted: app.commands.lists.static,
-            default: fileSearcher,
-          },
-          { maxCommands: 10, blur: 1 },
+    commands: new Map(),
+    registerCommand: (id, command) => {
+      if (app.commands.has(id)) {
+        log.warn(
+          "app-core",
+          `Command ID "${id}" is already registered. Overwriting.`,
         );
-      },
+      }
+      app.commands.set(id, command);
+    },
+    refreshPalette: () => {
+      const staticCommands = Array.from(app.commands.values());
+
+      const fileSearcher = async (query) => {
+        if (!query) return [];
+        const searchResults = app.state.fileSearchIndex.search(query, {
+          fields: ["name", "text"],
+          boost: { name: 2, text: 1 },
+        });
+        return searchResults.map((result) => ({
+          title: result.name.split("/").pop(),
+          lambda: () => app.workspace.openFile(result.id, app.state.activePane),
+        }));
+      };
+
+      metaP.bind(
+        {
+          shifted: staticCommands,
+          default: fileSearcher,
+        },
+        { maxCommands: 10, blur: 1 },
+      );
     },
     // Workspace API
     workspace: {
@@ -103,13 +89,7 @@ export function createApp() {
       },
       registerViewType: (name, config) => {
         app.viewTypes.set(name, config);
-        const command = {
-          title: `New ${config.title || name} View`,
-          lambda: () => app.ui.createCustomPane(name),
-        };
-        // 4. Use the new, safe registration method
-        app.commands.register("static", command);
-        app.commands.refreshPalette(); // Refresh the palette to show the new command
+        // No longer registers a command automatically.
       },
     },
 

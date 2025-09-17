@@ -65,11 +65,10 @@ export async function loadAndIndexNotes(files) {
   });
   state.fileSearchIndex.addAll(documents);
 
-  window.app.commands.refreshPalette();
+  window.app.refreshPalette();
 }
 
 export async function createNewFile(filename, params = {}) {
-  console.log(params);
   const untitledRegex = /^(?:.*\/)?Untitled (\d+)\.md$/;
   const existingNumbers = state.allFilePaths
     .map((path) => {

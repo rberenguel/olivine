@@ -1,13 +1,15 @@
 - [x] Tags should be better visible
 - [x] The sidebar behaves weirdly when the outline is very large
 - [x] No right side sidebar
+- [ ] Gutters no longer work, closing a pane does not remove it either. What happened?
 - [ ] There could be a problem with renaming files that have spaces
 - [x] Create a sample test vault with stuff here
 - [ ] Offer an API for buttons in the header
 - [x] Clean and remove the VS Code extension parts
 - [ ] The backend is not looking for new files… https://github.com/fsnotify/fsnotify
 - [ ] Better rendering for code blocks
-- [ ] Commands should have ids and be callable by id
+- [x] Commands should have ids
+- [ ] and be callable by id (this may be done already)
 - [x] Clean up the code related to VS Code
 - [ ] Worth having the Chrome extension mode?
 - [ ] Event based reindexing
