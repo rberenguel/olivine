@@ -32,7 +32,7 @@ async function loadExtensions(app) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const initialFiles = await fs.initialize();
+  await fs.initialize();
 
   const app = createApp();
   window.app = app;
@@ -56,5 +56,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await loadExtensions(app);
   app.ui.createInitialPane();
-  await app.workspace.initializeFileHandling(initialFiles);
+  await app.workspace.initializeFileHandling();
 });

@@ -157,8 +157,9 @@ export function findFileByTitle(title) {
   );
 }
 
-export async function initializeFileHandling(files) {
+export async function initializeFileHandling() {
   try {
+    const files = await fs.getInitialFiles();
     await loadAndIndexNotes(files);
   } catch (e) {
     console.error("Error getting initial files", e);

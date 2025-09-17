@@ -52,7 +52,6 @@ const log = {
   },
 };
 
-
 const idbStore = {
   db: null,
   async getDb() {
@@ -89,4 +88,4 @@ const idbStore = {
 
 idbStore.getDb(); // Initialize the database connection early.
 
-window.idbStore = idbStore
+window.idbStore = idbStore;

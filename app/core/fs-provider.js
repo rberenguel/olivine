@@ -3,6 +3,7 @@
 let directoryHandle;
 let fileHandles = new Map();
 let remoteBridge = null;
+let initialFileList = []; // Variable to store the initial file list
 
 async function verifyPermission(handle) {
   const options = { mode: "readwrite" };
@@ -68,21 +69,27 @@ export async function initialize() {
       const bridge = await import("../remote-bridge.js");
       remoteBridge = bridge;
       document.getElementById("open-vault-btn").style.display = "none";
-      return remoteBridge.getInitialFiles();
+      initialFileList = await remoteBridge.getInitialFiles();
     } catch (e) {
       console.error("Failed to load remote bridge:", e);
       document.body.innerHTML = `<h1>Error</h1><p>Could not load the remote file bridge.</p>`;
-      return [];
+      initialFileList = [];
     }
   } else {
-    document.getElementById("open-vault-btn").addEventListener("click", async () => {
+    document
+      .getElementById("open-vault-btn")
+      .addEventListener("click", async () => {
         const files = await openVault();
         // This is a bit of a hack. We need to reload the file list in the sidebar.
         // A more robust solution would be to have a proper event system.
         window.app.workspace.setFileList(files);
-    });
-    return initializeLocalFs();
+      });
+    initialFileList = await initializeLocalFs();
   }
+}
+
+export function getInitialFiles() {
+  return initialFileList;
 }
 
 export async function readFile(path) {
@@ -97,48 +104,52 @@ export async function readFile(path) {
 }
 
 export async function writeFile(path, content) {
-    if (remoteBridge) {
-        return remoteBridge.writeFile(path, content);
-    }
+  if (remoteBridge) {
+    return remoteBridge.writeFile(path, content);
+  }
 
-    try {
-        let currentHandle = directoryHandle;
-        const parts = path.split("/");
-        const fileName = parts.pop();
-
-        for (const part of parts) {
-            currentHandle = await currentHandle.getDirectoryHandle(part, { create: true });
-        }
-
-        const fileHandle = await currentHandle.getFileHandle(fileName, { create: true });
-        const writable = await fileHandle.createWritable();
-        await writable.write(content);
-        await writable.close();
-    } catch (e) {
-        console.error("Error saving file:", e);
-        throw e; // Re-throw the error to be handled by the caller
-    }
-}
-
-export async function createNewFile(path) {
-    return writeFile(path, "");
-}
-
-export async function renameFile(oldPath, newPath) {
-    if (remoteBridge) {
-        return remoteBridge.renameFile(oldPath, newPath);
-    }
-
-    const content = await readFile(oldPath);
-    await writeFile(newPath, content);
-    
-    // Delete the old file
+  try {
     let currentHandle = directoryHandle;
-    const parts = oldPath.split('/');
+    const parts = path.split("/");
     const fileName = parts.pop();
 
     for (const part of parts) {
-        currentHandle = await currentHandle.getDirectoryHandle(part);
+      currentHandle = await currentHandle.getDirectoryHandle(part, {
+        create: true,
+      });
     }
-    await currentHandle.removeEntry(fileName);
+
+    const fileHandle = await currentHandle.getFileHandle(fileName, {
+      create: true,
+    });
+    const writable = await fileHandle.createWritable();
+    await writable.write(content);
+    await writable.close();
+  } catch (e) {
+    console.error("Error saving file:", e);
+    throw e; // Re-throw the error to be handled by the caller
+  }
+}
+
+export async function createNewFile(path) {
+  return writeFile(path, "");
+}
+
+export async function renameFile(oldPath, newPath) {
+  if (remoteBridge) {
+    return remoteBridge.renameFile(oldPath, newPath);
+  }
+
+  const content = await readFile(oldPath);
+  await writeFile(newPath, content);
+
+  // Delete the old file
+  let currentHandle = directoryHandle;
+  const parts = oldPath.split("/");
+  const fileName = parts.pop();
+
+  for (const part of parts) {
+    currentHandle = await currentHandle.getDirectoryHandle(part);
+  }
+  await currentHandle.removeEntry(fileName);
 }

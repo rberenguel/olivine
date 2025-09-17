@@ -4,11 +4,11 @@
 - [ ] There could be a problem with renaming files that have spaces
 - [x] Create a sample test vault with stuff here
 - [ ] Offer an API for buttons in the header
-- [ ] Clean and remove the VS Code extension parts
+- [x] Clean and remove the VS Code extension parts
 - [ ] The backend is not looking for new files… https://github.com/fsnotify/fsnotify
 - [ ] Better rendering for code blocks
 - [ ] Commands should have ids and be callable by id
-- [ ] Clean up the code related to VS Code
+- [x] Clean up the code related to VS Code
 - [ ] Worth having the Chrome extension mode?
 - [ ] Event based reindexing
 - [ ] Store and load created indexes (needs a reindex command then)
