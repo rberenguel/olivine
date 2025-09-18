@@ -1,6 +1,6 @@
 import { state } from "./state.js";
 import { loadSidebarList } from "../components/sidebar.js";
-import { MiniSearch } from "CodeMirrorBundle";
+import { MiniSearch, Transaction } from "CodeMirrorBundle";
 import * as fs from "./fs-provider.js";
 import { createEditor } from "../components/editor.js";
 
@@ -146,6 +146,7 @@ export async function openFile(filename, pane) {
         to: pane.editorView.state.doc?.length || 0, // For empty editors
         insert: content,
       },
+      annotations: Transaction.addToHistory.of(false),
     });
 
     document.querySelectorAll("#notes-list li").forEach((li) => {

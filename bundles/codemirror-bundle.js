@@ -11,6 +11,7 @@ import {
   WidgetType,
   ViewPlugin,
 } from "@codemirror/view";
+import { Transaction } from "@codemirror/state";
 import { history, defaultKeymap, historyKeymap } from "@codemirror/commands";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
@@ -21,6 +22,7 @@ import { syntaxTree } from "@codemirror/language";
 import { GFM } from "@lezer/markdown"; // <-- The correct import
 
 export {
+  Transaction,
   RangeSetBuilder,
   StateField,
   EditorSelection,
