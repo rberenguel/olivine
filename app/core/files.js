@@ -173,3 +173,16 @@ export async function initializeFileHandling() {
     console.error("Error getting initial files", e);
   }
 }
+
+export function saveActiveFile(app) {
+  const pane = app.workspace.getActivePane();
+  if (!pane || !pane.filePath) {
+    log.info("files", "No active file to save.");
+    return;
+  }
+
+  const content = pane.editorView.state.doc.toString();
+  saveFile(pane.filePath, content);
+  app.events.emit("file:saved", { path: pane.filePath });
+  log.info("files", `File saved: ${pane.filePath}`);
+}

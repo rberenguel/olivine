@@ -1,0 +1,5 @@
+{
+  "name": "Leader Key",
+  "main": "./main.js",
+  "style": "./style.css"
+}

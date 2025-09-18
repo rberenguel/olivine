@@ -34,6 +34,13 @@ export function createApp() {
       }
       app.commands.set(id, command);
     },
+    executeCommand: (id) => {
+      if (app.commands.has(id)) {
+        app.commands.get(id).lambda();
+      } else {
+        log.warn("app-core", `Attempted to execute unknown command: ${id}`);
+      }
+    },
     refreshPalette: () => {
       const staticCommands = Array.from(app.commands.values());
 

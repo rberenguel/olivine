@@ -2,6 +2,7 @@ import { createApp } from "./core/app.js";
 import { initializeSidebar } from "./components/sidebar.js";
 import extensionDirectories from "./extensions.js";
 import { initializeCommands } from "./core/commands.js";
+import { initializeShortcuts } from "./core/shortcuts.js";
 import * as fs from "./core/fs-provider.js";
 
 async function loadExtensions(app) {
@@ -53,6 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ---------------------------------------------
   initializeSidebar(app);
   initializeCommands(app);
+  initializeShortcuts(app);
 
   await loadExtensions(app);
   app.ui.createInitialPane();

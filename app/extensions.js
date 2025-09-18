@@ -12,4 +12,5 @@ export default [
   "../app/extensions/snipper",
   "../app/extensions/privacy",
   "../app/extensions/codeblocks",
+  "../app/extensions/leader",
 ];

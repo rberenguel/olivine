@@ -1,4 +1,3 @@
 Untitled note
 
 The thing
-

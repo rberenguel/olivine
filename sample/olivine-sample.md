@@ -16,12 +16,11 @@ glow
 
 - [ ] Task
 - [x] Another task
-- [ ] 
+- [ ]
 - [ ] More tasks
 
 > [!info]
 > Admonition block
-
 
 ```python
 # python comment
@@ -33,7 +32,6 @@ def foo():
 > blockquote like this
 
 **bold**
-
 
 - List
 - List

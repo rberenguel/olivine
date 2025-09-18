@@ -113,7 +113,7 @@ export function createInitialPane() {
   setActivePane(pane);
 }
 
-function closePane(pane) {
+export function closePane(pane) {
   const paneElement = pane.element;
   const parent = paneElement.parentElement;
 

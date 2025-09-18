@@ -238,9 +238,6 @@ const frontmatterField = StateField.define({
   provide: (f) => EditorView.decorations.from(f),
 });
 
-// --- END: New Frontmatter Rendering Code ---
-
-// --- START: Combined Activation ---
 export function activate(app) {
   log.info("live-preview", "Activating Extension");
   if (!app.state.cmExtensions) {
@@ -249,4 +246,4 @@ export function activate(app) {
   // Add both the original plugin and the new state field
   app.state.cmExtensions.push(livePreviewPlugin, frontmatterField);
 }
-// --- END: Combined Activation ---
+

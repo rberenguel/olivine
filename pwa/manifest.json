@@ -1,8 +1,25 @@
 {
   "name": "Olivine",
   "short_name": "Olivine",
-  "start_url": "index.html",
+  "description": "A local-first Markdown editor for your notes.",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000"
+  "background_color": "#1a1a1a",
+  "theme_color": "#2c2c2c",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "../sample/olivine.png",
+      "type": "image/png",
+      "sizes": "1783x1328",
+      "form_factor": "wide"
+    }
+  ]
 }

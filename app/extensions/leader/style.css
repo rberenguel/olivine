@@ -1,0 +1,4 @@
+body.leader-mode-active {
+  border: 3px solid #cc0;
+  box-sizing: border-box; /* To ensure border doesn't add to dimensions */
+}

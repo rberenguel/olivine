@@ -1,7 +1,7 @@
 // app/core/commands.js
 import { state } from "./state.js";
-import { loadAndIndexNotes, createNewFile } from "./files.js";
-import { splitActivePane } from "../components/panes.js";
+import { loadAndIndexNotes, createNewFile, saveActiveFile } from "./files.js";
+import { splitActivePane, closePane } from "../components/panes.js";
 
 // This file now only defines the static commands
 const staticCommands = [
@@ -12,7 +12,7 @@ const staticCommands = [
 ];
 
 export function initializeCommands(app) {
-  // Register the initial static commands
+  // Register commands that should appear in the palette
   for (let command of staticCommands) {
     const id = command.title
       .split(" ")
@@ -20,10 +20,12 @@ export function initializeCommands(app) {
       .join("-");
     app.registerCommand("core:" + id, command);
   }
-  //app.commands.register("static", staticCommands);
 
-  // The palette is now refreshed elsewhere, like after files are loaded
+  // Register commands that should NOT appear in the palette
+  app.registerCommand("core:close-pane", {
+    lambda: () => closePane(app.workspace.getActivePane()),
+  });
+  app.registerCommand("core:save-pane", {
+    lambda: () => saveActiveFile(app),
+  });
 }
-
-// The old updatePaletteBindings function is no longer needed here.
-// Its logic has been moved to app.commands.refreshPalette.
