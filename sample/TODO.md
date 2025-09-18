@@ -31,5 +31,3 @@
 - [x] Clean and remove the VS Code extension parts
 - [x] Better rendering for code blocks
 - [x] Commands should have ids
-
-

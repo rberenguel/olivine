@@ -246,4 +246,3 @@ export function activate(app) {
   // Add both the original plugin and the new state field
   app.state.cmExtensions.push(livePreviewPlugin, frontmatterField);
 }
-
