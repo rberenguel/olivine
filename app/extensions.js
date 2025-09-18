@@ -11,4 +11,5 @@ export default [
   "../app/extensions/callouts",
   "../app/extensions/snipper",
   "../app/extensions/privacy",
+  "../app/extensions/codeblocks",
 ];

@@ -87,8 +87,17 @@ export function initializeSidebar(app) {
   });
 
   const contentWrapper = document.getElementById("content-wrapper");
-  contentWrapper.style.gridTemplateColumns =
-    "250px 8px 1fr 8px calc(15vw + 1.5rem)";
+  // 1. Get the root font size to calculate rem units in pixels.
+  const rootFontSize = parseFloat(
+    getComputedStyle(document.documentElement).fontSize,
+  );
+
+  // 2. Calculate the desired width of the right sidebar in pixels.
+  const rightSidebarWidthInPixels =
+    window.innerWidth * 0.15 + rootFontSize * 1.5;
+
+  // 3. Set the grid template columns using the calculated pixel value.
+  contentWrapper.style.gridTemplateColumns = `250px 8px 1fr 8px ${rightSidebarWidthInPixels}px`;
 
   Split({
     columnGutters: [
@@ -106,7 +115,6 @@ export function initializeSidebar(app) {
     ],
   });
 
-  // --- REPLACED: New dynamic registration logic ---
   app.ui.registerView = (viewName, element) => {
     switch (viewName) {
       case "sidebar-panel": {

@@ -1,18 +1,35 @@
+### Indexing / refreshing
+
+- [ ] Event based reindexing
+- [ ] Need to refresh on rename
+- [ ] Store and load created indexes (needs a reindex command then)
+
+### Commands, extensions, layout
+
+- [ ] and be callable by id (this may be done already)
+- [ ] Worth having the Chrome extension mode?
+
+### Nits
+
+- [ ] **LOW** There seems to be something partially broken in clicking on lines that contain external links (the cursor is not placed correctly)
+- [ ] **LOW** Can't move files, delete files (soft delete)
+
+### Documented quirks
+
+- The backend does not look for new files. A refresh could do, but we will need reindexing on actions, and refreshing of the sidebar too
+
+### Done
+
 - [x] Tags should be better visible
 - [x] The sidebar behaves weirdly when the outline is very large
 - [x] No right side sidebar
-- [ ] Gutters no longer work, closing a pane does not remove it either. What happened?
-- [ ] There could be a problem with renaming files that have spaces
+- [x] Gutters no longer work, closing a pane does not remove it either. What happened?
+- [x] There could be a problem with renaming files that have spaces (note: not really, it was something else broken)
 - [x] Create a sample test vault with stuff here
-- [ ] Offer an API for buttons in the header
-- [x] Clean and remove the VS Code extension parts
-- [ ] The backend is not looking for new files… https://github.com/fsnotify/fsnotify
-- [ ] Better rendering for code blocks
-- [x] Commands should have ids
-- [ ] and be callable by id (this may be done already)
+- [x] Offer an API for buttons in the header
 - [x] Clean up the code related to VS Code
-- [ ] Worth having the Chrome extension mode?
-- [ ] Event based reindexing
-- [ ] Store and load created indexes (needs a reindex command then)
-- [ ] **LOW** There seems to be something partially broken in clicking on lines that contain external links (the cursor is not placed correctly)
-- [ ] **LOW** Can't move files
+- [x] Clean and remove the VS Code extension parts
+- [x] Better rendering for code blocks
+- [x] Commands should have ids
+
+

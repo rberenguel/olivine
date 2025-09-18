@@ -16,18 +16,24 @@ glow
 
 - [ ] Task
 - [x] Another task
+- [ ] 
 - [ ] More tasks
 
 > [!info]
 > Admonition block
 
+
 ```python
-Code blocks are still not rendered properly
+# python comment
+def foo():
+  party
+  pass
 ```
 
 > blockquote like this
 
 **bold**
+
 
 - List
 - List

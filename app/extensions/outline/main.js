@@ -4,7 +4,7 @@ import { EditorView, EditorSelection } from "CodeMirrorBundle";
 function updateOutline(pane, listElement, panelContainer) {
   listElement.innerHTML = ""; // Clear the old outline
 
-  if (!pane) {
+  if (!pane || !pane.editorView) {
     panelContainer.style.display = "none";
     return;
   }

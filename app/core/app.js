@@ -91,6 +91,26 @@ export function createApp() {
         app.viewTypes.set(name, config);
         // No longer registers a command automatically.
       },
+      addHeaderIcon: ({ icon, onClick }) => {
+        // NOTE: This targets the sidebar-header, as in the original extension.
+        // If a more generic "header-actions" container is desired later,
+        // this is the only line that would need to change.
+        const header = document.getElementById("sidebar-header");
+        if (!header) {
+          console.error("Sidebar header container not found.");
+          return null;
+        }
+
+        const span = document.createElement("span");
+        // Creates the exact class string from the original code.
+        span.className = `iconoir iconoir-${icon}`;
+        span.addEventListener("click", onClick);
+
+        header.appendChild(span);
+
+        // Return the element so the extension can still interact with it if needed.
+        return span;
+      },
     },
 
     // Editor API (to be expanded)

@@ -1,0 +1,30 @@
+.cm-line.cm-code-block {
+  background-color: var(--background-secondary);
+  padding: 0 1.5em;
+  position: relative;
+}
+
+.cm-code-block-lang {
+  position: absolute;
+  top: 0.5em;
+  right: 1em;
+  font-size: 0.75em;
+  color: var(--text-muted);
+  background-color: var(--background-primary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-family: var(--font-sans);
+}
+
+.cm-line.cm-code-block:first-of-type {
+  padding-top: 2.5em;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.cm-line.cm-code-block:last-of-type {
+  padding-bottom: 1em;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}

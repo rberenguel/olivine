@@ -2,6 +2,7 @@ import { state } from "./state.js";
 import { loadSidebarList } from "../components/sidebar.js";
 import { MiniSearch } from "CodeMirrorBundle";
 import * as fs from "./fs-provider.js";
+import { createEditor } from "../components/editor.js";
 
 function buildFileTree(files) {
   const root = { children: [] };
@@ -88,6 +89,13 @@ export async function createNewFile(filename, params = {}) {
     await fs.createNewFile(newFilename);
     await initializeFileHandling();
     if (params.open) {
+      console.log(state.activePane);
+      if (!state.activePane.editorView) {
+        state.activePane.editorView = createEditor(
+          state.activePane.contentContainer,
+          "",
+        ).editorView;
+      }
       await openFile(newFilename, state.activePane);
     }
   } catch (error) {
@@ -106,7 +114,7 @@ export async function renameFile(oldPath, newName) {
 
   try {
     await fs.renameFile(oldPath, newPath);
-    await initializeFileHandling();
+    // TODO: refresh the file list in the sidebar more smartly.
     return newPath;
   } catch (error) {
     console.error("Error renaming file:", error);
@@ -124,6 +132,7 @@ export async function saveFile(path, content) {
 
 export async function openFile(filename, pane) {
   if (!pane) return;
+  console.log(pane);
   try {
     const content = await fs.readFile(filename);
     pane.filePath = filename;
@@ -134,7 +143,7 @@ export async function openFile(filename, pane) {
     pane.editorView.dispatch({
       changes: {
         from: 0,
-        to: pane.editorView.state.doc.length,
+        to: pane.editorView.state.doc?.length || 0, // For empty editors
         insert: content,
       },
     });

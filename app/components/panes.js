@@ -57,7 +57,7 @@ function createPaneElement(isEditor = true) {
     const finishEditing = async () => {
       const newName = input.value.trim();
       const oldName = pane.filePath.split("/").pop();
-
+      clearTimeout(pane.saveTimeout);
       if (newName && newName !== oldName) {
         const newPath = await renameFile(pane.filePath, newName);
         if (newPath) {
@@ -119,12 +119,14 @@ function closePane(pane) {
 
   paneElement.remove();
 
-  if (
-    parent.classList.contains("pane-container") &&
-    parent.children.length === 1
-  ) {
-    const grandparent = parent.parentElement;
-    grandparent.replaceChild(parent.children[0], parent);
+  if (parent.classList.contains("pane-container")) {
+    const remainingPanes = Array.from(parent.children).filter((el) =>
+      el.classList.contains("pane"),
+    );
+    if (remainingPanes.length === 1) {
+      const grandparent = parent.parentElement;
+      grandparent.replaceChild(remainingPanes[0], parent);
+    }
   }
 
   if (state.activePane === pane) {
@@ -137,9 +139,8 @@ function closePane(pane) {
   }
 }
 
-// app/components/panes.js
-
 export function splitActivePane(direction) {
+  log.info("panes", `Splitting ${direction}`);
   if (!state.activePane) {
     createInitialPane();
     return;
@@ -153,7 +154,7 @@ export function splitActivePane(direction) {
 
   parent.replaceChild(container, existingPane.element);
 
-  const newPane = createPaneElement(true);
+  const newPane = createPaneElement(false); // Prevent opening a new file
 
   // The library needs a gutter element between the panes
   const gutter = document.createElement("div");

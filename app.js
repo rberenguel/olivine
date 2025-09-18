@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return tx.done;
     },
   };
-
+  /*
   // --- Combined Live Preview and Wikilink Plugin ---
   const livePreviewPlugin = EditorView.decorations.compute(
     ["doc", "selection"],
@@ -126,6 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return Decoration.set(decorations, true);
     },
   );
+  */
   // --- Diagnostic Click Handler ---
   const wikilinkClickHandler = EditorView.domEventHandlers({
     mousedown: (event, view) => {
@@ -190,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const onUpdate = EditorView.updateListener.of((update) => {
     if (update.docChanged) {
       clearTimeout(saveTimeout);
-      saveTimeout = setTimeout(saveCurrentFile, 500);
+      saveTimeout = setTimeout(saveCurrentFile, 5000);
     }
   });
 

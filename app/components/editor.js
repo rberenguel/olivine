@@ -3,9 +3,12 @@ import {
   EditorView,
   keymap,
   defaultKeymap,
+  history,
+  historyKeymap,
   markdown,
   oneDark,
   Decoration,
+  languages,
   syntaxTree,
   markdownLanguage,
   autocompletion,
@@ -91,12 +94,17 @@ export function createEditor(parent, doc = "") {
   const editorState = EditorState.create({
     doc,
     extensions: [
+      history(),
       EditorView.lineWrapping,
-      markdown({ base: markdownLanguage, extensions: GFM }),
+      markdown({
+        base: markdownLanguage,
+        codeLanguages: languages,
+        extensions: GFM,
+      }),
       oneDark,
       EditorView.lineWrapping,
       onUpdate(pane),
-      keymap.of([...defaultKeymap, ...completionKeymap]),
+      keymap.of([...historyKeymap, ...defaultKeymap, ...completionKeymap]),
       ...state.cmExtensions,
     ],
   });

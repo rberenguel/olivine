@@ -6,6 +6,7 @@ export default {
   output: {
     file: "../lib/codemirror-bundle.js",
     format: "es", // Changed from 'iife' to 'es'
+    inlineDynamicImports: true,
   },
   plugins: [nodeResolve()],
 };

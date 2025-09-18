@@ -11,8 +11,9 @@ import {
   WidgetType,
   ViewPlugin,
 } from "@codemirror/view";
-import { defaultKeymap } from "@codemirror/commands";
+import { history, defaultKeymap, historyKeymap } from "@codemirror/commands";
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown";
+import { languages } from "@codemirror/language-data";
 import { autocompletion, completionKeymap } from "@codemirror/autocomplete";
 import { oneDark } from "@codemirror/theme-one-dark";
 import MiniSearch from "minisearch";
@@ -28,7 +29,10 @@ export {
   WidgetType,
   ViewPlugin,
   keymap,
+  history,
   defaultKeymap,
+  historyKeymap,
+  languages,
   markdown,
   oneDark,
   MiniSearch,

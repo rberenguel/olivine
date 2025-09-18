@@ -5,7 +5,7 @@ import { splitActivePane } from "../components/panes.js";
 
 // This file now only defines the static commands
 const staticCommands = [
-  { title: "New Note", lambda: () => createNewFile("", true) },
+  { title: "New Note", lambda: () => createNewFile("", { open: true }) },
   { title: "Split horizontally", lambda: () => splitActivePane("horizontal") },
   { title: "Split vertically", lambda: () => splitActivePane("vertical") },
   { title: "Re-index Notes", lambda: () => loadAndIndexNotes() },
