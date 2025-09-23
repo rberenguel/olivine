@@ -9,6 +9,10 @@
 - [ ] and be callable by id (this may be done already)
 - [ ] Worth having the Chrome extension mode?
 
+### Rendering
+
+- [ ] Snippets don't render the markdown yet (Admonitions do)
+
 ### Nits
 
 - [ ] **LOW** There seems to be something partially broken in clicking on lines that contain external links (the cursor is not placed correctly)
@@ -20,6 +24,7 @@
 
 ### Done
 
+- [x] Admonition tags now render its internal markdown
 - [x] Tags should be better visible
 - [x] The sidebar behaves weirdly when the outline is very large
 - [x] No right side sidebar

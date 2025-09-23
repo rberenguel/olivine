@@ -20,6 +20,7 @@ import { oneDark } from "@codemirror/theme-one-dark";
 import MiniSearch from "minisearch";
 import { syntaxTree } from "@codemirror/language";
 import { GFM } from "@lezer/markdown"; // <-- The correct import
+import { marked } from "marked";
 
 export {
   Transaction,
@@ -45,4 +46,5 @@ export {
   autocompletion,
   completionKeymap,
   GFM,
+  marked,
 };

@@ -20,7 +20,7 @@ glow
 - [ ] More tasks
 
 > [!info]
-> Admonition block
+> Admonition _block_ which can now **render** Markdown (styled)
 
 ```python
 # python comment

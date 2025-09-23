@@ -4,7 +4,23 @@ import {
   syntaxTree,
   EditorView,
   StateField,
+  marked,
 } from "CodeMirrorBundle";
+
+// --- Marked.js Extension for Tags ---
+const walkTokens = (token) => {
+  if (token.type === "text") {
+    // Regex to find tags: a # followed by allowed characters, preceded by a space or start of string.
+    const tagRegex = /(^|\s)#([a-zA-Z0-9_/-]+)/g;
+    token.text = token.text.replace(tagRegex, (match, p1, p2) => {
+      // p1 is the space or start of string, p2 is the tag name
+      return `${p1}<span class="cm-tag">#${p2}</span>`;
+    });
+  }
+};
+
+marked.use({ walkTokens });
+// --- End Marked.js Extension ---
 
 // Map callout types to their Iconoir class names and display titles
 function getCalloutConfig(type) {
@@ -62,8 +78,8 @@ class CalloutWidget extends WidgetType {
     });
 
     const content = container.appendChild(document.createElement("div"));
-    content.className = "callout-content";
-    content.innerHTML = this.contentHTML; // Render the markdown content as HTML
+    content.className = "callout-content rendered-markdown";
+    content.innerHTML = marked.parse(this.contentHTML); // Render the markdown content as HTML
 
     return container;
   }

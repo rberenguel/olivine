@@ -20,6 +20,7 @@
     "@codemirror/state": "^6.4.1",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "^6.23.1",
-    "minisearch": "^6.3.0"
+    "minisearch": "^6.3.0",
+    "marked": "^13.0.2"
   }
 }
