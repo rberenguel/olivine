@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' 'unsafe-inline' data:;"
+    />
+    <title>%%TITLE%%</title>
+    %%FAVICON_TAG%%
+    <style>
+      %%CSS%%
+    </style>
+  </head>
+  <body class="%%BODY_CLASS%%">
+    %%RADIO_INPUTS%%
+    <input type="checkbox" id="overview-toggle" />
+    <input type="checkbox" id="notes-toggle" />
+    <div class="slides-overview-pane">%%MINI_SLIDES_MARKUP%%</div>
+    <div class="slides-container">%%SLIDES_MARKUP%%</div>
+    <div class="speaker-notes-pane">
+      <div class="notes-content-wrapper">%%SPEAKER_NOTES_MARKUP%%</div>
+    </div>
+  </body>
+</html>

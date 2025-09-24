@@ -42,6 +42,10 @@ const log = {
     this._log("warn", system, message);
   },
 
+  debug: function (system, message) {
+    this._log("warn", system, message);
+  },
+
   /**
    * Logs an error message.
    * @param {string} system - The system name.

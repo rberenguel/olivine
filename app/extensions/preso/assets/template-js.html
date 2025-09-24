@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' 'unsafe-inline' data:;"
+    />
+    <title>%%TITLE%%</title>
+    %%FAVICON_TAG%%
+    <style>
+      %%CSS%%
+    </style>
+  </head>
+  <body class="%%BODY_CLASS%%">
+    <div id="main-view">
+      <div class="slides-overview-pane">%%MINI_SLIDES_MARKUP%%</div>
+      <div class="slides-container">%%SLIDES_MARKUP%%</div>
+      <div class="speaker-notes-pane">
+        <div class="notes-content-wrapper">%%SPEAKER_NOTES_MARKUP%%</div>
+      </div>
+    </div>
+    <div id="presenter-view">
+      <div class="presenter-main">
+        <div class="presenter-current-slide-container">
+          <div id="presenter-current-slide" class="presenter-slide-host"></div>
+        </div>
+        <div class="presenter-notes-container">
+          <h3>Speaker Notes</h3>
+          <div id="presenter-notes"></div>
+        </div>
+      </div>
+      <div class="presenter-sidebar">
+        <div class="presenter-controls">
+          <button id="presenter-prev-btn">◀ Prev</button>
+          <button id="presenter-next-btn">Next ▶</button>
+        </div>
+        <div class="presenter-next-slide-container">
+          <h4>Next</h4>
+          <div id="presenter-next-slide" class="presenter-slide-host"></div>
+        </div>
+        <div class="presenter-prev-slide-container">
+          <h4>Previous</h4>
+          <div id="presenter-prev-slide" class="presenter-slide-host"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      %%NAVIGATION_JS%%
+    </script>
+  </body>
+</html>

@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  background-color: var(--background-primary, #1c1c1c);
+  overflow: hidden;
+}
+.slide-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition:
+    opacity 0.4s ease-in-out,
+    transform 0.3s ease-in-out;
+  pointer-events: none;
+}
+.slide-preview {
+  aspect-ratio: 16 / 9;
+  width: 98%;
+  max-width: 98%;
+  max-height: 98%;
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  transform: none !important;
+  container-type: size !important;
+}
+
+/* --- Common Navigation Styles for Export --- */
+.slide-preview .navigation {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+  right: 20px;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  pointer-events: none;
+}
+.nav-label {
+  pointer-events: all;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    opacity 0.2s ease-in-out,
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out;
+  opacity: 0;
+}
+.slide-preview .nav-label.next {
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 20px solid rgba(0, 0, 0, 0.4);
+}
+.slide-preview .nav-label.prev {
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-right: 20px solid rgba(0, 0, 0, 0.4);
+}
+
+.slide-preview:hover .nav-label {
+  opacity: 0.8;
+}
+.slide-preview .nav-label.prev:hover {
+  opacity: 1;
+  border-right-color: rgba(90, 90, 90, 0.4);
+}
+.slide-preview .nav-label.next:hover {
+  opacity: 1;
+  border-left-color: rgba(90, 90, 90, 0.4);
+}
+
+/* --- Notes & Overview Toggle Button Style (shared) --- */
+.nav-label.notes-toggle,
+.nav-label.overview-toggle {
+  position: absolute;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  border: 4px solid rgba(0, 0, 0, 0.4);
+  color: rgba(0, 0, 0, 0.5);
+}
+.nav-label.notes-toggle {
+  transform: translateX(30px);
+  border-radius: 50%;
+}
+.nav-label.overview-toggle {
+  transform: translateX(-30px);
+  border-radius: 4px;
+}
+.nav-label.notes-toggle:hover,
+.nav-label.overview-toggle:hover {
+  color: rgba(0, 0, 0, 0.9);
+  border-color: rgba(0, 0, 0, 0.8);
+}
+
+.notes-content {
+  font-size: 16px;
+}
+.mini-slide-content {
+  padding: 5px;
+  font-size: 14px;
+  font-family: var(--font-interface);
+  color: var(--text-muted);
+  overflow: hidden;
+}

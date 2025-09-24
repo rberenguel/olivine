@@ -40,7 +40,7 @@ function onUpdate(pane) {
       const head = state.selection.main.head;
       const line = state.doc.lineAt(head).number - 1; // CM6 lines are 1-based
       const content = state.doc.toString();
-      
+
       const cursor = {
         line: line,
         ch: head - state.doc.line(line + 1).from,

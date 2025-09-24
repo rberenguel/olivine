@@ -12,11 +12,17 @@
 ### Rendering
 
 - [ ] Snippets don't render the markdown yet (Admonitions do)
+- [ ] Preso needs a lot of work in styling
 
 ### Nits
 
 - [ ] **LOW** There seems to be something partially broken in clicking on lines that contain external links (the cursor is not placed correctly)
 - [ ] **LOW** Can't move files, delete files (soft delete)
+
+### Tests / Improvements
+
+- [ ] Add CSP to the server side
+- [ ] Think if we can have some simple browser-based tests
 
 ### Documented quirks
 

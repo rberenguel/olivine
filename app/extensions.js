@@ -13,5 +13,5 @@ export default [
   "../app/extensions/privacy",
   "../app/extensions/codeblocks",
   "../app/extensions/leader",
-  "../app/extensions/preso"
+  "../app/extensions/preso",
 ];

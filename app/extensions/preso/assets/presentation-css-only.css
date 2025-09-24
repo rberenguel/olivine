@@ -1,0 +1,20 @@
+
+input[type="radio"], input[type="checkbox"] { display: none; }
+.slides-overview-pane { position: fixed; left: 0; top: 0; height: 100vh; width: 0; background-color: rgba(0,0,0,0.2); overflow-y: auto; transition: width 0.3s ease-in-out; z-index: 20; padding-top: 10px; box-sizing: border-box; }
+.slides-container { position: absolute; left: 0; top: 0; width: 100vw; height: 100vh; transition: width 0.3s ease-in-out, left 0.3s ease-in-out; }
+.speaker-notes-pane { position: fixed; top: 0; right: 0; width: 0; height: 100vh; transition: width 0.3s ease-in-out; z-index: 10; display: flex; justify-content: center; align-items: center; }
+%%DYNAMIC_CSS%%
+#overview-toggle:checked ~ .slides-overview-pane { width: 10vw; }
+#overview-toggle:checked ~ .slides-container { left: 10vw; width: 90vw; }
+#overview-toggle:checked ~ .slides-container .overview-toggle { background-color: rgba(0, 0, 0, 0.2); }
+#notes-toggle:checked ~ .slides-container { width: 80vw; }
+#notes-toggle:checked ~ .speaker-notes-pane { width: 20vw; }
+#notes-toggle:checked ~ .slides-container .notes-toggle { background-color: rgba(0, 0, 0, 0.2); }
+#overview-toggle:checked ~ #notes-toggle:checked ~ .slides-container { left: 10vw; width: 70vw; }
+.mini-slide-wrapper { display: flex; align-items: center; justify-content: center; text-align: center; margin: 0 auto 10px auto; width: 90%; aspect-ratio: 16/9; cursor: pointer; border: 1px solid var(--background-modifier-border); border-radius: 4px; background-color: var(--background-primary); transition: border-color 0.2s; }
+.mini-slide-wrapper:hover { border-color: var(--interactive-accent); }
+.notes-content-wrapper { width: calc(100% - 2em); height: calc(80vw * 0.98 * 9 / 16); max-height: calc(98vh - 4em); border-radius: 12px; background-color: var(--background-secondary-alt, #1a1a1a); padding: 2em; box-sizing: border-box; overflow-y: auto; opacity: 0; transition: opacity 0.3s ease-in-out; }
+#notes-toggle:checked ~ .speaker-notes-pane .notes-content-wrapper { opacity: 1; }
+.speaker-notes-pane .notes-content { display: none; }
+.speaker-notes-pane h1, .speaker-notes-pane h2 { border: none; }
+%%DYNAMIC_NOTES_CSS%%

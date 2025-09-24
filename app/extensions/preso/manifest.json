@@ -1,7 +1,7 @@
 {
-    "name": "Preso",
-    "version": "0.1.0",
-    "description": "Live slide previews for presentations.",
-    "main": "main.js",
+  "name": "Preso",
+  "version": "0.1.0",
+  "description": "Live slide previews for presentations.",
+  "main": "main.js",
   "style": "./style.css"
 }
