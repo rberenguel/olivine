@@ -6,6 +6,7 @@ export default [
   "../app/extensions/outline",
   "../app/extensions/graph-view",
   "../app/extensions/live-preview",
+  "../app/extensions/images",
   "../app/extensions/link-widgets",
   "../app/extensions/tasks",
   "../app/extensions/callouts",

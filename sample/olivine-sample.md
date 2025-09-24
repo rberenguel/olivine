@@ -31,6 +31,8 @@ def foo():
 
 > blockquote like this
 
+![[flows-sample-image.jpg]]
+
 **bold**
 
 - List

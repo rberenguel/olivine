@@ -43,9 +43,9 @@ export class Exporter {
       ? (frontmatterMatch[1].match(/preso:\s*(\w+)/) || [])[1]
       : null;
 
-    const bodyThemeClass = document.body.className.includes("theme-dark")
-      ? "theme-dark"
-      : "theme-light";
+    const bodyThemeClass = document.body.className.includes("theme-light")
+      ? "theme-light"
+      : "theme-dark";
 
     console.log(`Exporting ${allSlides.length} slides...`);
 

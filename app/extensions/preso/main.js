@@ -84,14 +84,14 @@ function extractSlideExtras(app, slides, currentSlideIndex, sourcePath) {
 
 async function handleEditorChange(app, data) {
   // ADDED FOR DEBUGGING
-  log.debug("preso", "handleEditorChange triggered. Data:");
-  log.debug("preso", JSON.parse(JSON.stringify(data)));
+  //log.debug("preso", "handleEditorChange triggered. Data:");
+  //log.debug("preso", JSON.parse(JSON.stringify(data)));
 
   const { content, cursor, filePath } = data;
   if (content === undefined || !cursor) {
     // || !filePath
     console.log(cursor, filePath);
-    log.debug("preso", "Returning mystery");
+    //log.debug("preso", "Returning mystery");
     return;
   }
 
@@ -104,15 +104,13 @@ async function handleEditorChange(app, data) {
       cursorLine =
         activePane.editorView.state.doc.lineAt(cursor.head).number - 1;
     } else {
-      log.debug("preso", "head return");
+      //log.debug("preso", "head return");
       return;
     }
   } else {
-    log.debug("preso", "line return");
+    //log.debug("preso", "line return");
     return;
   }
-
-  console.log(`[Preso Debug] Calculated cursorLine: ${cursorLine}`);
 
   const frontmatterMatch = content.match(/^---([\s\S]*?)---/);
   const presoDirective = frontmatterMatch

@@ -1,0 +1,8 @@
+.cm-rendered-image {
+  display: block;
+  max-width: 90%;
+  margin: 1em auto;
+  border-radius: 6px;
+  background-color: var(--background-secondary);
+  padding: 4px;
+}

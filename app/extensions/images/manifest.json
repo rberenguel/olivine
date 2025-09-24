@@ -1,0 +1,6 @@
+{
+  "name": "Images",
+  "description": "Renders Markdown images inline within the editor.",
+  "main": "./main.js",
+  "style": "./style.css"
+}
