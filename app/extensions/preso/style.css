@@ -1,0 +1,916 @@
+@font-face {
+	font-family: "Ostrich Sans";
+	src: url("OstrichSans-Medium.otf") format("opentype");
+}
+@font-face {
+	font-family: "Ostrich Sans";
+	font-weight: bold;
+	src: url("OstrichSans-Heavy.otf") format("opentype");
+}
+@font-face {
+	font-family: "Inter";
+	src: url("Inter-Regular.otf") format("opentype");
+}
+@font-face {
+	font-family: "Monoid";
+	src: url("Monoid-Regular.woff2") format("woff2");
+}
+/* Base styles for the floating preview window */
+.slide-preview {
+	display: none;
+	position: absolute;
+	top: 50px;
+	right: 50px;
+	width: 480px;
+	aspect-ratio: 16 / 9;
+	z-index: 100;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	padding-top: 1cqh;
+	padding-bottom: 1cqh;
+	padding-right: 1cqw;
+	padding-left: 1cqw; /* Yes, w */
+	box-sizing: border-box;
+	overflow: hidden;
+	container-type: size;
+}
+
+.slide-preview.is-visible {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.slide-preview.layout-fill {
+	background-size: cover;
+	background-position: center;
+	padding: 0;
+}
+
+.slide-preview.layout-bg {
+	background-size: cover;
+	background-position: center;
+	padding: 0;
+}
+.bg-content-wrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 4cqw;
+	box-sizing: border-box;
+}
+.bg-content-wrapper::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+}
+.bg-content-wrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 4cqw;
+	box-sizing: border-box;
+}
+.bg-content-wrapper::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+}
+.bg-content-wrapper > * {
+	position: relative;
+	z-index: 2;
+}
+
+/* For 50/50 split screen layouts */
+.slide-preview.layout-split {
+	display: flex;
+	flex-direction: row;
+	padding: 0;
+}
+.slide-preview.layout-split.split-right {
+	flex-direction: row-reverse;
+}
+.split-image-pane {
+	flex: 0 0 50%;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+}
+.split-text-pane {
+	flex: 0 0 50%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 4cqw;
+	box-sizing: border-box;
+	container-type: inline-size;
+}
+
+.slide-preview pre[class^="language-"] {
+	font-family: "Monoid", "Menlo", "Monaco", "Courier New", monospace;
+	font-size: 3.5cqh;
+	padding: 0.5cqh;
+	margin: 1cqh 0;
+	border-radius: 8px;
+	overflow-x: auto; /* Allow horizontal scrolling for long lines */
+	text-align: left; /* Code should always be left-aligned */
+	width: 100%;
+	box-sizing: border-box;
+	line-height: 1.4;
+	text-transform: none !important;
+}
+
+.slide-preview mark {
+	padding: 0.1em 0.05em 0em 0.15em;
+	border-radius: 0.05em;
+}
+
+.slide-preview .copy-code-button {
+	display: none;
+}
+
+/* Default Theme (matches Obsidian's base) */
+.slide-preview {
+	background-color: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+}
+
+/* 1. Original Typography Rules */
+
+/* Resize for links */
+.slide-preview .external-link {
+	background-size: 0.5em;
+	padding-inline-end: 0em;
+	background-position-y: 0;
+}
+
+.external-link {
+	color: var(--link-external-color);
+	text-decoration-line: var(--link-external-decoration);
+	cursor: var(--cursor-link);
+	filter: var(--link-external-filter);
+	transition: opacity var(--anim-duration-fast) ease-in-out;
+	background-position: unset;
+	background-repeat: unset;
+	background-image: none;
+}
+
+/* 2. New ::after pseudo-element for the icon */
+.external-link::after {
+	content: "🔗";
+	font-size: 20%;
+	position: relative;
+	top: -2.5em;
+	left: -0.5em;
+	display: inline-block;
+	filter: hue-rotate(90deg);
+	backdrop-filter: invert(0.1);
+	padding: 0.3em 0.3em 0em 0.2em;
+	border-radius: 50%;
+}
+
+.slide-preview ul,
+ol {
+	margin-block-start: 0.1em;
+	margin-block-end: 0.1em;
+}
+
+.slide-preview hr {
+	width: 100%;
+	margin: 1rem;
+}
+
+.slide-preview code:not([class^="language-"]) {
+	font-size: 70%;
+	text-transform: none;
+	background-color: var(--background-modifier-border);
+	padding: 0.2em 0.3em 0.2em 0.3em;
+	border-radius: 0.2em;
+}
+
+.slide-preview ol,
+ul {
+	padding-inline-start: 0;
+	padding-left: calc(3cqh + 0.2em);
+}
+
+.slide-preview h1 {
+	font-size: 24cqh;
+	margin-block-start: 0.2em;
+	margin-block-end: 0.2em;
+	line-height: 0.8em;
+}
+.slide-preview h2 {
+	font-size: 20cqh;
+	margin-block-start: 0.2em;
+	margin-block-end: 0.2em;
+	line-height: 0.8em;
+}
+.slide-preview h3 {
+	font-size: 16cqh;
+	margin-block-start: 0.2em;
+	margin-block-end: 0.2em;
+	line-height: 0.8em;
+}
+.slide-preview h4 {
+	font-size: 12cqh;
+	margin-block-start: 0.2em;
+	margin-block-end: 0.2em;
+	line-height: 0.8em;
+}
+.slide-preview h5 {
+	font-size: 10cqh;
+	margin-block-start: 0.2em;
+	margin-block-end: 0.2em;
+	line-height: 0.8em;
+}
+.slide-preview h6 {
+	font-size: 9cqh;
+	margin-block-start: 0.2em;
+	margin-block-end: 0.2em;
+	line-height: 0.8em;
+}
+.slide-preview p {
+	font-size: 8cqh;
+	margin-block-start: 0.2em;
+	margin-block-end: 0.2em;
+}
+.slide-preview li {
+	font-size: 8cqh;
+	margin-block-start: 0.2em;
+	margin-block-end: 0.2em;
+}
+.slide-preview ol {
+	font-size: 8cqh;
+	margin-block-start: 0.2em;
+	margin-block-end: 0.2em;
+}
+
+/* 2. Layout Logic  */
+
+/* Tighter spacing for consecutive headings (e.g., Title & Subtitle) */
+.slide-preview :is(h1, h2, h3, h4, h5, h6) + :is(h1, h2, h3, h4, h5, h6) {
+	margin-block-start: 0.1em;
+}
+
+/* Automatic "Title and Content" Layout */
+/* Switches from centered to top-aligned when a slide has a heading and other content */
+.slide-preview.is-visible:has(:is(h1, h2, h3, h4, h5, h6)):has(
+		> :is(p, ul, ol, pre, blockquote):not(.slide-footnotes-container *)
+	) {
+	justify-content: flex-start; /* Aligns content to the top */
+}
+
+/* Apply the top-alignment logic to the inner text containers for these layouts. */
+.layout-bg
+	.bg-content-wrapper:has(:is(h1, h2, h3, h4, h5, h6)):has(
+		> :is(p, ul, ol, pre, blockquote):not(.slide-footnotes-container *)
+	),
+.layout-split
+	.split-text-pane:has(:is(h1, h2, h3, h4, h5, h6)):has(
+		> :is(p, ul, ol, pre, blockquote):not(.slide-footnotes-container *)
+	) {
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+/* Make headings full-width in this layout to ensure proper left alignment */
+.slide-preview:has(:is(h1, h2, h3, h4, h5, h6)):has(
+		> :is(p, ul, ol, pre, blockquote):not(.slide-footnotes-container *)
+	)
+	> :is(h1, h2, h3, h4, h5, h6) {
+	width: 100%;
+}
+
+/*
+  Reduce heading sizes in the "Title and Content" layout to create
+  a better visual hierarchy between the title and the body
+*/
+.slide-preview:has(:is(h1, h2, h3, h4, h5, h6)):has(
+		> :is(p, ul, ol, pre, blockquote):not(.slide-footnotes-container *)
+	)
+	h1 {
+	font-size: 14cqh;
+}
+.slide-preview:has(:is(h1, h2, h3, h4, h5, h6)):has(
+		> :is(p, ul, ol, pre, blockquote):not(.slide-footnotes-container *)
+	)
+	h2 {
+	font-size: 13cqh;
+}
+.slide-preview:has(:is(h1, h2, h3, h4, h5, h6)):has(
+		> :is(p, ul, ol, pre, blockquote):not(.slide-footnotes-container *)
+	)
+	h3 {
+	font-size: 12cqh;
+}
+.slide-preview:has(:is(h1, h2, h3, h4, h5, h6)):has(
+		> :is(p, ul, ol, pre, blockquote):not(.slide-footnotes-container *)
+	)
+	h4 {
+	font-size: 11cqh;
+}
+.slide-preview:has(:is(h1, h2, h3, h4, h5, h6)):has(
+		> :is(p, ul, ol, pre, blockquote):not(.slide-footnotes-container *)
+	)
+	h5 {
+	font-size: 10cqh;
+}
+.slide-preview:has(:is(h1, h2, h3, h4, h5, h6)):has(
+		> :is(p, ul, ol, pre, blockquote):not(.slide-footnotes-container *)
+	)
+	h6 {
+	font-size: 9cqh;
+}
+
+/* --- INLINE IMAGE STYLING --- */
+
+/* Styles any image inside a line of text to match the text's height */
+.slide-preview :is(p, li, h1, h2, h3, h4, h5, h6) img {
+	height: 1em;
+	width: auto;
+	vertical-align: -0.1em; /* Adjust to align nicely with text baseline */
+	margin-inline: 0.2em;
+}
+
+/* This targets paragraphs that ONLY contain an image (and nothing else).
+   It resets the inline styles above, allowing the image to be large. */
+.slide-preview p:has(> img:only-child) img,
+.slide-preview p:has(> a:only-child > img:only-child) img {
+	all: unset;
+	display: block;
+	max-width: 100%;
+	max-height: 75cqh;
+	height: auto;
+	width: auto;
+	margin-block: 1em;
+}
+
+/* This centers an image that is the sole content of a paragraph. */
+.slide-preview p:has(> img:only-child),
+.slide-preview p:has(> a:only-child > img:only-child) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	line-height: normal;
+}
+
+/* ---------------------------------------------------------------------*/
+
+/* --- BG LAYOUT IMPROVEMENTS --- */
+
+/* NEW: Container for multi-image sliced backgrounds */
+.bg-slice-container {
+	display: flex;
+	position: absolute;
+	inset: 0;
+	z-index: 0; /* Sits behind the content wrapper */
+}
+
+/* NEW: A single vertical slice in a multi-image layout */
+.bg-slice {
+	flex: 1; /* Each slice takes up an equal amount of space */
+	height: 100%;
+	background-size: cover;
+	background-position: center;
+}
+
+/* 1. New background image filter */
+/* This adds a blur and brightness adjustment to the image, making text on top easier to read. */
+
+.theme-dark .layout-bg .bg-content-wrapper::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	background-color: rgba(0, 0, 0, 0.3); /* Dark overlay */
+	-webkit-backdrop-filter: var(--custom-bg-filter, brightness(80%) blur(4px));
+	backdrop-filter: var(--custom-bg-filter, brightness(80%) blur(4px));
+}
+
+.theme-light .layout-bg .bg-content-wrapper::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	background-color: rgba(255, 255, 255, 0.1); /* Light overlay */
+	-webkit-backdrop-filter: var(
+		--custom-bg-filter,
+		brightness(100%) blur(4px)
+	);
+	backdrop-filter: var(--custom-bg-filter, brightness(100%) blur(4px));
+}
+
+/* ---------------------------------------------------------------------*/
+
+/* 2. Better header styles for BG slides */
+/* This adds a shadow to make headers stand out from the background image. */
+
+/* For dark theme (light text) */
+.theme-dark .layout-bg :is(h1, h2, h3, h4, h5, h6) {
+	/*color: #ffffff; Force pure white for max contrast */
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+/* For light theme (dark text) */
+.theme-light .layout-bg :is(h1, h2, h3, h4, h5, h6) {
+	/* A subtle white glow adds separation for dark text */
+	text-shadow:
+		0 0 6px rgba(255, 255, 255, 0.7),
+		0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+/* --- HEADER-ONLY STYLING FOR IMAGE SLIDES --- */
+/* These rules apply when a slide with a special image layout contains ONLY headings,
+   and no other text like paragraphs or lists. It makes the text larger and centered. */
+
+/* 1. Center the content vertically in the header-only case. */
+.layout-bg
+	.bg-content-wrapper:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	),
+.layout-split
+	.split-text-pane:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	) {
+	flex-direction: column;
+	justify-content: center;
+}
+
+/* FONT SIZES FOR BG SLIDES (Header-Only) */
+.layout-bg
+	.bg-content-wrapper:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h1) {
+	font-size: 24cqh;
+}
+.layout-bg
+	.bg-content-wrapper:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h2) {
+	font-size: 20cqh;
+}
+.layout-bg
+	.bg-content-wrapper:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h3) {
+	font-size: 16cqh;
+}
+.layout-bg
+	.bg-content-wrapper:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h4) {
+	font-size: 12cqh;
+}
+.layout-bg
+	.bg-content-wrapper:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h5) {
+	font-size: 7cqh;
+}
+.layout-bg
+	.bg-content-wrapper:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h6) {
+	font-size: 5cqh;
+}
+
+/* FONT SIZES FOR SPLIT SLIDES (Header-Only) */
+/* These are slightly smaller to fit well in the 50% width pane. */
+.layout-split
+	.split-text-pane:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h1) {
+	font-size: 22cqh;
+}
+.layout-split
+	.split-text-pane:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h2) {
+	font-size: 18cqh;
+}
+.layout-split
+	.split-text-pane:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h3) {
+	font-size: 14cqh;
+}
+.layout-split
+	.split-text-pane:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h4) {
+	font-size: 10cqh;
+}
+.layout-split
+	.split-text-pane:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h5) {
+	font-size: 7cqh;
+}
+.layout-split
+	.split-text-pane:has(:is(h1, h2, h3, h4, h5, h6)):not(
+		:has(:is(p, ul, ol, pre, blockquote))
+	)
+	:is(h6) {
+	font-size: 5cqh;
+}
+
+/* --- FOOTNOTES STYLING --- */
+.slide-preview .slide-footnotes-container {
+	position: absolute;
+	bottom: 5cqh; /* Position just above the slide extras container */
+	left: 4cqw;
+	right: 4cqw;
+	z-index: 50;
+	pointer-events: none; /* Let clicks pass through the container itself */
+	max-height: 25%;
+	overflow-y: auto;
+}
+
+.slide-preview .slide-footnotes-container > * {
+	pointer-events: all; /* But allow interaction with the content (e.g., scrolling) */
+}
+
+.slide-preview .footnotes {
+	backdrop-filter: invert(0.1);
+	padding-top: 0.01em;
+	border-radius: 0.05em;
+}
+
+.slide-preview .footnotes ol {
+	margin: 0;
+	padding-left: 2.5cqw;
+}
+
+.slide-preview .footnotes li {
+	margin-block-start: 0.2em;
+	margin-block-end: 0.2em;
+}
+
+/* Style the superscript reference in the main text to ensure it is small and raised */
+.slide-preview sup.footnote-ref {
+	filter: hue-rotate(90deg);
+	line-height: 0; /* Prevent it from affecting the main text's line height */
+	font-size: 70%;
+	vertical-align: super;
+}
+
+.slide-preview .footnotes * {
+	font-size: 3cqh !important;
+}
+
+.slide-preview .footnotes li::marker {
+	color: var(--interactive-accent);
+}
+
+/* --- THEME: serious --- */
+.slide-preview.serious {
+	font-family: "Inter", Helvetica, sans-serif;
+	line-height: 1.3;
+	font-weight: 700;
+	font-size: 3.5cqw;
+}
+.slide-preview.serious h1,
+.slide-preview.serious h2,
+.slide-preview.serious h3 {
+	transform: scaleX(0.7);
+	text-transform: uppercase;
+	font-size: 7cqw;
+}
+.slide-preview.serious em {
+	font-weight: 100;
+	font-style: normal;
+}
+
+.theme-dark .slide-preview.serious {
+	background: rgb(40, 42, 45);
+	color: #f0f0f0;
+}
+.theme-dark .slide-preview.serious strong {
+	color: rgb(223, 142, 200);
+}
+.theme-light .slide-preview.serious {
+	background: #ffffff;
+	color: #333333;
+	border: 1px solid #e0e0e0;
+}
+.theme-light .slide-preview.serious strong {
+	color: #c7259f;
+}
+
+/* --- THEME: happy --- */
+.slide-preview.happy {
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	font-size: 4cqw;
+	border-radius: 20px;
+}
+.slide-preview.happy h1 {
+	font-size: 8cqw;
+	animation: bounce 1s;
+}
+
+.theme-light .slide-preview.happy {
+	background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+	color: #4a2c2c;
+	border: 0.5cqw solid white;
+	text-shadow: 0.2cqw 0.2cqw 0.4cqw rgba(255, 255, 255, 0.5);
+}
+.theme-light .slide-preview.happy strong {
+	color: #d9534f;
+}
+.theme-dark .slide-preview.happy {
+	background: linear-gradient(135deg, #524719 0%, #6b2e1a 100%);
+	color: #fff5e8;
+	border: 0.5cqw solid #333;
+	text-shadow: 0.2cqw 0.2cqw 0.6cqw rgba(0, 0, 0, 0.6);
+}
+.theme-dark .slide-preview.happy strong {
+	color: #ff8a80;
+}
+
+@keyframes bounce {
+	0%,
+	20%,
+	50%,
+	80%,
+	100% {
+		transform: translateY(0);
+	}
+	40% {
+		transform: translateY(-3cqw);
+	}
+	60% {
+		transform: translateY(-1.5cqw);
+	}
+}
+
+/* --- THEME: ostrich --- */
+.slide-preview.ostrich {
+	font-family: "Ostrich Sans", sans-serif;
+	text-transform: uppercase;
+	/*letter-spacing: 0.1em;*/
+	font-size: 3.8cqw;
+	border-style: solid;
+}
+
+.slide-preview.ostrich p {
+	font-family: "Ostrich Sans", sans-serif;
+}
+
+.theme-light .slide-preview.ostrich {
+	background-color: #f0f0f0;
+	color: #111;
+	border-color: #111;
+}
+.theme-light .slide-preview.ostrich strong {
+	color: #e44d26;
+}
+.theme-dark .slide-preview.ostrich {
+	background-color: #222;
+	color: #ddd;
+	border-color: #ddd;
+}
+.theme-dark .slide-preview.ostrich strong {
+	color: #ff7043;
+}
+
+.slide-preview.ostrich ul {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.slide-preview.ostrich ul li {
+	position: relative;
+	padding-left: calc(3cqh + 0.2em);
+}
+
+.slide-preview.ostrich ul > li::before {
+	content: "⏵"; /* Right-pointing triangle character */
+	position: absolute;
+	left: 0;
+	font-size: 0.8em; /* Adjust size of the triangle */
+	top: 0.1em; /* Fine-tune vertical alignment */
+	/* This uses the accent color from the active Obsidian theme */
+	color: var(--interactive-accent);
+}
+
+/* --- START: Added code for OL alignment in 'ostrich' theme --- */
+
+/* Reset the ordered list to remove default numbering and padding */
+.slide-preview.ostrich ol {
+	list-style-type: none;
+	padding-left: 0;
+	counter-reset: ostrich-counter; /* Initialize a counter for the list */
+}
+
+/* Add relative positioning and padding to the list items, same as the UL */
+.slide-preview.ostrich ol li {
+	position: relative;
+	padding-left: calc(3cqh + 0.2em);
+	counter-increment: ostrich-counter; /* Increment counter for each LI */
+}
+
+/* Create a custom marker that matches the UL's bullet alignment */
+.slide-preview.ostrich ol > li::before {
+	content: counter(ostrich-counter) "."; /* Display '1.', '2.', etc. */
+	position: absolute;
+	left: 0;
+	top: 0.1em; /* Matches the vertical alignment of the UL bullet */
+	font-size: 0.8em; /* Matches the font size of the UL bullet */
+	color: var(--interactive-accent); /* Matches the color of the UL bullet */
+}
+
+.slide-preview.ostrich .footnotes ol > li::before {
+	left: 1cqh;
+	top: 0.5cqh;
+	font-size: 0.9em;
+}
+
+/* --- END: Added code for OL alignment in 'ostrich' theme --- */
+
+/* --- THEME: custom --- */
+.slide-preview.custom {
+	font-family: "Monoid", "Menlo", "Monaco", monospace;
+	font-size: 3cqw;
+	border-radius: 4px;
+	border: 1px solid;
+}
+.slide-preview.custom h1::before {
+	content: ">$ ";
+}
+.slide-preview.custom code {
+	padding: 0.2cqw 0.5cqw;
+	border-radius: 3px;
+}
+
+.theme-dark .slide-preview.custom {
+	background: #1e1e1e;
+	color: #e0e0e0;
+	border-color: #555;
+}
+.theme-dark .slide-preview.custom strong {
+	color: #61dafb;
+}
+.theme-dark .slide-preview.custom h1::before {
+	color: #8f8;
+}
+.theme-dark .slide-preview.custom code {
+	background: #333;
+}
+.theme-light .slide-preview.custom {
+	background: #f5f5f5;
+	color: #24292e;
+	border-color: #e1e4e8;
+}
+.theme-light .slide-preview.custom strong {
+	color: #0366d6;
+}
+.theme-light .slide-preview.custom h1::before {
+	color: #28a745;
+}
+.theme-light .slide-preview.custom code {
+	background: #e8e8e8;
+}
+
+/* --- SLIDE EXTRAS (HEADER, FOOTER, ICONS) --- */
+
+/* Shared styles for the new header and footer containers */
+.slide-header-extras-container,
+.slide-footer-extras-container {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 5cqh;
+	padding: 0 2.5cqw;
+	box-sizing: border-box;
+	z-index: 100;
+	pointer-events: none;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+/* Position the header bar at the top */
+.slide-header-extras-container {
+	top: 1cqh;
+}
+
+/* Position the footer bar at the bottom (restoring original layout) */
+.slide-footer-extras-container {
+	bottom: 0.2cqh;
+}
+
+/* Groups for left- and right-aligned items */
+.extras-left-group,
+.extras-right-group {
+	display: flex;
+	align-items: center;
+	gap: 1cqw;
+	pointer-events: all;
+}
+
+/* Shared styles for content inside the bars */
+.header-content,
+.footer-content {
+	display: flex;
+	align-items: center;
+	gap: 1cqw;
+}
+
+.slide-header-extras-container *,
+.slide-footer-extras-container * {
+	font-size: 2.5cqh;
+	opacity: 0.9;
+}
+
+.footer-content p,
+.header-content p {
+	font-size: 2.5cqh;
+}
+
+.footer-content .external-link::after,
+.header-content .external-link::after {
+	content: "" !important;
+}
+
+.header-image,
+.footer-image,
+.top-left-icon,
+.top-right-icon {
+	max-height: 3.5cqh;
+	width: auto;
+}
+
+/* Fooder ends */
+
+.slides-modal .slide-container {
+	margin-bottom: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* Override the default floating preview styles when inside the modal */
+.slides-modal .slide-preview {
+	position: relative !important;
+	display: flex !important; /* Ensure it's visible, overriding the default 'none' */
+	top: auto !important;
+	right: auto !important;
+	transform: none !important;
+	width: 90%;
+	max-width: 1280px;
+	box-shadow: var(--shadow-l);
+}
+
+/* ------ Mobile styling ------ */
+
+@media (max-width: 600px) {
+	.slide-preview {
+		/* Override desktop size and position */
+		width: 160px !important; /* A much smaller, more reasonable width */
+		top: auto !important;
+		top: 15px !important;
+		right: 15px !important;
+		left: auto !important;
+	}
+	/* Force the modal to take up the full screen on mobile */
+	.mod.slides-modal {
+		width: 100%;
+		height: 100%;
+		max-width: 100vw;
+		max-height: 100vh;
+		border-radius: 0;
+	}
+
+	/* Ensure slide width doesn't create horizontal overflow */
+	.slides-modal .slide-preview {
+		width: 95vw !important; /* Override the width we force on mobile */
+	}
+
+	/* Reduce spacing between slides on mobile */
+	.slides-modal .slide-container {
+		margin-bottom: 20px;
+	}
+}

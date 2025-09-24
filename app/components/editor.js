@@ -21,17 +21,37 @@ import { saveFile, findFileByTitle, openFile } from "../core/files.js";
 // This listener handles auto-saving.
 function onUpdate(pane) {
   return EditorView.updateListener.of((update) => {
+    // This part handles auto-saving when the document changes.
     if (update.docChanged) {
       clearTimeout(pane.saveTimeout);
       pane.saveTimeout = setTimeout(() => {
         const content = update.state.doc.toString();
         if (pane.filePath) {
           saveFile(pane.filePath, content);
-          // NEW: Emit the event after saving
           window.app.events.emit("file:saved", { path: pane.filePath });
         }
       }, 500);
     }
+
+    // --- ADD THIS BLOCK ---
+    // This part handles broadcasting cursor activity when the selection changes.
+    if (update.selectionSet) {
+      const state = update.state;
+      const head = state.selection.main.head;
+      const line = state.doc.lineAt(head).number - 1; // CM6 lines are 1-based
+      const content = state.doc.toString();
+      
+      const cursor = {
+        line: line,
+        ch: head - state.doc.line(line + 1).from,
+      };
+
+      window.app.events.emit("editor:cursorActivity", {
+        content: content,
+        cursor: cursor,
+      });
+    }
+    // --- END OF BLOCK ---
   });
 }
 

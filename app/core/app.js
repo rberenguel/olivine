@@ -32,6 +32,13 @@ export function createApp() {
           `Command ID "${id}" is already registered. Overwriting.`,
         );
       }
+      if(!command.lambda){
+        log.error("app-core", `Command ${id} cannot be registered: it has no lambda`);
+        return;
+      }
+      if(!command.title){
+        log.warn("app-core", `Command ${id} cannot be registered: it has no title`);
+      }
       app.commands.set(id, command);
     },
     executeCommand: (id) => {
