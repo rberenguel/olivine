@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"io/fs"
 	"log"
+	"mime"
 	"math/big"
 	"net/http"
 	"os"
@@ -124,7 +125,7 @@ func serveIndex(w http.ResponseWriter, r *http.Request, diskPath string) {
 	script := "<script>window.__OLIVINE_MODE__ = 'remote';</script>"
 
 	// Replace the placeholder with the actual script
-	modifiedContent := strings.Replace(string(content), "<!--INJECT_OLIVINE_MODE-->", script, 1)
+	 modifiedContent := strings.Replace(string(content), "<!--INJECT_OLIVINE_MODE-->", script, 1)
 
 	// Set headers to prevent caching
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
@@ -158,7 +159,7 @@ func handleListFiles(w http.ResponseWriter, r *http.Request) {
 			return nil
 		}
 
-		if !d.IsDir() && filepath.Ext(path) == ".md" {
+		if !d.IsDir() {
 			relativePath, err := filepath.Rel(vaultPath, path)
 			if err != nil {
 				return err
@@ -189,7 +190,6 @@ func handleReadFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Security: Prevent directory traversal
 	fullPath := filepath.Join(vaultPath, filePath)
 	cleanPath, err := filepath.Abs(fullPath)
 	if err != nil {
@@ -207,9 +207,17 @@ func handleReadFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := map[string]string{"content": string(content)}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+	ext := filepath.Ext(filePath)
+	mimeType := mime.TypeByExtension(ext)
+
+	if strings.HasPrefix(mimeType, "image/") {
+		w.Header().Set("Content-Type", mimeType)
+		w.Write(content)
+	} else {
+		response := map[string]string{"content": string(content)}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
+	}
 }
 
 type WriteRequest struct {

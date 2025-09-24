@@ -7,6 +7,10 @@ Also offers search (through Minisearch, title only for now) and a couple command
 
 <img src="sample/olivine.png"/>
 
+A newer screenshot
+
+<img src="media/example.png"/>
+
 ---
 
 Rendering and styles are still a bit so-so. So far can only be considered a proof of concept. Hopefully I never need

@@ -32,7 +32,7 @@ export function getSlidesWithBoundaries(rawContent) {
   let startLine = slideStartIndex;
 
   const processSlide = (slideContent, start, end) => {
-    log.debug("preso", slideContent);
+    //log.debug("preso", slideContent);
     const slideLines = slideContent.split("\n");
     const directives = {};
     let contentStartIndex = 0;

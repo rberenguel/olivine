@@ -1,5 +1,7 @@
 import { getSlidesWithBoundaries } from "./parser.js";
 import { marked } from "CodeMirrorBundle";
+// TODO: expose in the API
+import { findFileByTitle } from "../../core/files.js";
 
 export class PresentationView {
   constructor(containerEl) {
@@ -141,11 +143,44 @@ export class PresentationView {
       }
     }
 
+    const imageRegex = /!\[\[([^\]]+)\]\]|!\[([^\]]*)\]\(([^)]+)\)/g;
+
+    const imageReplace = finalMarkdown.replace(
+      imageRegex,
+      (match, p1, p2, p3) => {
+        // Arguments correspond to:
+        // match: The full matched string, e.g., "![[images/my-cat.png]]"
+        // p1: The first capturing group for ![[...]]
+        // p2: The second capturing group for ![...](...) (alt text)
+        // p3: The third capturing group for ![...](...) (path)
+        let url = undefined;
+        let alt = "";
+        if (p1 !== undefined) {
+          // It's a wikilink-style match, so p1 is defined.
+          let sp = p1.split("|");
+          if (sp.length > 1) {
+            alt = sp[1];
+          }
+          const filePath = findFileByTitle(sp[0]);
+          if (filePath) {
+            // Construct the URL to fetch the file from the Go server
+            url = `/api/files/read?path=${encodeURIComponent(filePath)}`;
+          }
+        } else {
+          // It's a standard markdown match, so p2 and p3 are defined.
+          url = p3;
+        }
+        return `![${alt}](${url})`;
+      },
+    );
+    finalMarkdown = imageReplace;
+    // TODO image replacement is still so-so
     const shadowHost = document.createElement("div");
     shadowHost.innerHTML = marked.parse(finalMarkdown);
     this.applyInlineCssDirectives(shadowHost);
 
     const allImages = Array.from(shadowHost.querySelectorAll("img"));
+    log.info("preso", allImages);
     const isSimpleFill =
       allImages.length === 1 &&
       !allImages[0].alt.match(/^(bg|left|right)/) &&

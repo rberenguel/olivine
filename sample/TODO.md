@@ -4,20 +4,33 @@
 - [ ] Need to refresh on rename
 - [ ] Store and load created indexes (needs a reindex command then)
 
-### Commands, extensions, layout
+### Commands, layout
 
-- [ ] and be callable by id (this may be done already)
+- [ ] Commands should be callable by id (this may be done already)
 - [ ] Worth having the Chrome extension mode?
+- [ ] Images should be open-able
+- [ ] Wikilink images should autocomplete for things in the vault
 
 ### Rendering
 
 - [ ] Snippets don't render the markdown yet (Admonitions do)
-- [ ] Preso needs a lot of work in styling
+- [ ] Image rendering is only partially there.
+
+### Extensions
+
+#### Preso
+
+- [ ] A lot of work in styling
+- [ ] Live editing should update the preview, not only cursor movement
+- [ ] Expose the search by filename API
 
 ### Nits
 
 - [ ] **LOW** There seems to be something partially broken in clicking on lines that contain external links (the cursor is not placed correctly)
 - [ ] **LOW** Can't move files, delete files (soft delete)
+
+Test making the file longer… no scroll?
+Damn, no scroll.
 
 ### Tests / Improvements
 

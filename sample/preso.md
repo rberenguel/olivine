@@ -31,3 +31,9 @@ Slides are separated by a Markdown rule separator, three dashes `---` on its own
 **Paragraphs?** Just type.
 
 New lines between paragraphs? Just leave a line empty.
+
+---
+
+# **Title**
+
+![[bubbles-sample-image.jpg|bg]]

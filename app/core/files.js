@@ -14,8 +14,8 @@ function buildFileTree(files) {
 
     for (let i = 0; i < parts.length; i++) {
       const part = parts[i];
-      const isFile = i === parts.length - 1 && part.endsWith(".md");
-      const nodeName = isFile ? part.replace(".md", "") : part;
+      const isFile = i === parts.length - 1;
+      const nodeName = isFile ? part : part;
 
       let childNode = currentNode.children.find(
         (node) => node.name === nodeName,
@@ -159,11 +159,16 @@ export async function openFile(filename, pane) {
 
 export function findFileByTitle(title) {
   const normalizedTitle = title.toLowerCase();
-  return state.allFilePaths.find(
+  const matchingFiles = state.allFilePaths.filter(
     (path) =>
-      path.toLowerCase().endsWith(`/${normalizedTitle}.md`) ||
-      path.toLowerCase() === `${normalizedTitle}.md`,
+      path.toLowerCase().endsWith(`/${normalizedTitle}`) ||
+      path.toLowerCase() === normalizedTitle,
   );
+  if (matchingFiles.length > 1) {
+    console.warn(`Ambiguous file reference: ${title}`);
+    return null;
+  }
+  return matchingFiles[0];
 }
 
 export async function initializeFileHandling() {
