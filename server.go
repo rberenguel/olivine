@@ -66,15 +66,16 @@ func main() {
 	log.Printf("HTTPS:      %t", useHTTPS)
 
 	// API Handlers
-	http.HandleFunc("/api/files", handleListFiles)
-	http.HandleFunc("/api/files/read", handleReadFile)
-	http.HandleFunc("/api/files/write", handleWriteFile)
-	http.HandleFunc("/api/files/create", handleCreateFile)
-	http.HandleFunc("/api/files/rename", handleRenameFile)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/api/files", handleListFiles)
+	mux.HandleFunc("/api/files/read", handleReadFile)
+	mux.HandleFunc("/api/files/write", handleWriteFile)
+	mux.HandleFunc("/api/files/create", handleCreateFile)
+	mux.HandleFunc("/api/files/rename", handleRenameFile)
 
 	// Custom File Server with Middleware for index.html injection
 	fileServer := http.FileServer(http.Dir(pwaPath))
-	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	mux.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// The user accesses the PWA via the /pwa/ directory. We must match this path.
 		if r.URL.Path == "/pwa/" || r.URL.Path == "/pwa/index.html" {
 			// The file on disk is located at "pwa/index.html" relative to the pwaPath.
@@ -87,6 +88,7 @@ func main() {
 
 	// Start Server
 	addr := fmt.Sprintf(":%d", port)
+	handler := cspMiddleware(mux)
 
 	if useHTTPS {
 		// Certificate Generation
@@ -98,16 +100,33 @@ func main() {
 		}
 		log.Printf("Serving PWA from '%s' on https://localhost%s/pwa", pwaPath, addr)
 		log.Printf("API is available at https://localhost%s/api", addr)
-		err = http.ListenAndServeTLS(addr, certFile, keyFile, nil)
+		err = http.ListenAndServeTLS(addr, certFile, keyFile, handler)
 	} else {
 		log.Printf("Serving PWA from '%s' on http://localhost%s/pwa", pwaPath, addr)
 		log.Printf("API is available at http://localhost%s/api", addr)
-		err = http.ListenAndServe(addr, nil)
+		err = http.ListenAndServe(addr, handler)
 	}
 
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func cspMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Content Security Policy (CSP) to enhance security.
+		// Any network requests made by scripts (like fetch, XMLHttpRequest, WebSockets) are only allowed to connect to origins http://localhost:8080 or https://localhost:8443 because connect-src becomes default-src self. Images are also restricted from external sources to prevent fun src manipulation.
+		// 'default-src 'self'' restricts all resources by default to the same origin.
+		// 'script-src' allows scripts from 'self' and specific inline scripts identified by their SHA256 hashes:
+		//   - 'sha256-3ZePEguRL1cll/Vx4EKPC4tqfNOMSVj1nA03CP6FxaY=' for the importmap script in pwa/index.html.
+		//   - 'sha256-bm1yo4mRoFEauq9TvnIxE/kL/ff77pNTZqzQC7V4QOM=' for the window.__OLIVINE_MODE__ script injected by serveIndex.
+		// 'style-src 'self' 'sha256-/0D+t90vS2WL6FCmGq72zuCjmCeHQbYG8jfDOec4oHw=' allows styles from 'self' and the CodeMirror default styling hash.
+		// 'img-src * data:' allows images from any origin and inline data URIs.
+		// 'object-src 'none'' blocks all <object>, <embed>, and <applet> elements.
+		// 'frame-ancestors 'none'' prevents the page from being embedded in iframes.
+		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self' 'sha256-3ZePEguRL1cll/Vx4EKPC4tqfNOMSVj1nA03CP6FxaY=' 'sha256-bm1yo4mRoFEauq9TvnIxE/kL/ff77pNTZqzQC7V4QOM='; style-src 'self' 'sha256-/0D+t90vS2WL6FCmGq72zuCjmCeHQbYG8jfDOec4oHw='; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; form-action 'self'; base-uri 'self'")
+		next.ServeHTTP(w, r)
+	})
 }
 
 func serveIndex(w http.ResponseWriter, r *http.Request, diskPath string) {
